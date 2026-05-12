@@ -14,6 +14,7 @@
       --accent:#275c58;
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family: Arial, sans-serif;
@@ -22,7 +23,7 @@
       line-height:1.6;
     }
     .wrap{
-      max-width:900px;
+      max-width:950px;
       margin:0 auto;
       padding:40px 20px 80px;
     }
@@ -85,6 +86,9 @@
       color:var(--muted);
       font-style:italic;
     }
+    .loading{
+      color:var(--muted);
+    }
     footer{
       margin-top:60px;
       padding-top:20px;
@@ -118,35 +122,35 @@
     <section id="publicaciones">
       <h2>Publicaciones</h2>
       <div id="publicaciones-lista">
-        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus publicaciones.</p></div>
+        <div class="item"><p class="loading">Cargando publicaciones...</p></div>
       </div>
     </section>
 
     <section id="comunicaciones">
       <h2>Comunicaciones</h2>
       <div id="comunicaciones-lista">
-        <div class="item"><p class="empty">Cargando comunicaciones...</p></div>
+        <div class="item"><p class="loading">Cargando comunicaciones...</p></div>
       </div>
     </section>
 
     <section id="cursos">
-      <h2>Cursos</h2>
+      <h2>Cursos y formación</h2>
       <div id="cursos-lista">
-        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus cursos y formación.</p></div>
+        <div class="item"><p class="loading">Cargando cursos...</p></div>
       </div>
     </section>
 
     <section id="sesiones">
       <h2>Sesiones</h2>
       <div id="sesiones-lista">
-        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus sesiones.</p></div>
+        <div class="item"><p class="loading">Cargando sesiones...</p></div>
       </div>
     </section>
 
     <section id="proyectos">
       <h2>Proyectos</h2>
       <div id="proyectos-lista">
-        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus proyectos.</p></div>
+        <div class="item"><p class="loading">Cargando proyectos...</p></div>
       </div>
     </section>
 
@@ -156,82 +160,124 @@
   </div>
 
   <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyx-WzyAbvmXfCa901FS7qwbeYo48_ibDhvDHHUNHpXtqeVFDi3By18fZPOUKDaVi2cbdAULAY_od-/pub?gid=0&single=true&output=csv';
+    const sheetId = '2PACX-1vSyx-WzyAbvmXfCa901FS7qwbeYo48_ibDhvDHHUNHpXtqeVFDi3By18fZPOUKDaVi2cbdAULAY_od-';
+    const gid = '0';
+    const gvizUrl = `https://docs.google.com/spreadsheets/d/e/${sheetId}/gviz/tq?gid=${gid}&tqx=out:json`;
 
-    function parseCSV(text) {
-      const lines = text.trim().split(/\r?\n/);
-      const rows = lines.map(line => {
-        const result = [];
-        let current = '';
-        let inQuotes = false;
-        for (let i = 0; i < line.length; i++) {
-          const char = line[i];
-          const next = line[i + 1];
-          if (char === '"' && inQuotes && next === '"') {
-            current += '"';
-            i++;
-          } else if (char === '"') {
-            inQuotes = !inQuotes;
-          } else if (char === ',' && !inQuotes) {
-            result.push(current);
-            current = '';
-          } else {
-            current += char;
-          }
-        }
-        result.push(current);
-        return result;
-      });
-      const headers = rows[0].map(h => h.trim());
-      return rows.slice(1).map(row => {
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = (row[i] || '').trim());
-        return obj;
-      });
+    function cleanValue(v) {
+      if (v === null || v === undefined) return '';
+      return String(v).trim();
+    }
+
+    function normalize(str) {
+      return cleanValue(str)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
     }
 
     function highlightName(text) {
-      return text.replace(/Prada Bou, M\./g, '<strong class="mine">Prada Bou, M.</strong>');
+      return text
+        .replace(/Prada Bou, M\./g, '<strong class="mine">Prada Bou, M.</strong>')
+        .replace(/María Prada Bou/g, '<strong class="mine">María Prada Bou</strong>');
     }
 
-    function renderComunicaciones(data) {
-      const container = document.getElementById('comunicaciones-lista');
-      const items = data
-        .filter(row => row.visible?.toLowerCase() === 'sí' && row.tipo === 'Comunicación')
-        .sort((a, b) => Number(b.año) - Number(a.año));
+    function parseGviz(text) {
+      const jsonText = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/)[1];
+      const data = JSON.parse(jsonText);
+      const cols = data.table.cols.map(col => cleanValue(col.label || col.id));
+      const rows = data.table.rows.map(row => {
+        const obj = {};
+        cols.forEach((col, index) => {
+          obj[col] = row.c[index] ? cleanValue(row.c[index].v) : '';
+        });
+        return obj;
+      });
+      return rows;
+    }
+
+    function mapRowKeys(row) {
+      return {
+        tipo: row.tipo || row.Tipo || '',
+        año: row.año || row.Año || row.ano || row.Ano || '',
+        titulo: row.titulo || row.Título || row.título || '',
+        autores: row.autores || row.Autores || '',
+        evento_revista_centro: row.evento_revista_centro || row['evento_revista_centro'] || row['Evento'] || row['Revista'] || row['Centro'] || '',
+        modalidad: row.modalidad || row.Modalidad || '',
+        doi: row.doi || row.DOI || '',
+        pdf_url: row.pdf_url || row['pdf_url'] || row['PDF'] || '',
+        texto_cv: row.texto_cv || row['texto_cv'] || '',
+        visible: row.visible || row.Visible || ''
+      };
+    }
+
+    function isVisible(row) {
+      const v = normalize(row.visible);
+      return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
+    }
+
+    function renderItem(row) {
+      let texto = row.texto_cv;
+
+      if (!texto) {
+        texto =
+          `${row.año} - ${row.titulo}` +
+          (row.autores ? `. ${row.autores}` : '') +
+          (row.evento_revista_centro ? `. ${row.evento_revista_centro}` : '') +
+          (row.modalidad ? ` (${row.modalidad})` : '') + '.';
+      }
+
+      texto = highlightName(texto);
+
+      const links = [];
+      if (row.doi) {
+        links.push(`<a href="${row.doi}" target="_blank" rel="noopener noreferrer">DOI</a>`);
+      }
+      if (row.pdf_url) {
+        links.push(`<a href="${row.pdf_url}" target="_blank" rel="noopener noreferrer">PDF</a>`);
+      }
+
+      return `
+        <div class="item">
+          <p>${texto}</p>
+          ${links.length ? `<div class="meta">${links.join('')}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function renderSection(containerId, rows, tipoBuscado, emptyText) {
+      const container = document.getElementById(containerId);
+      const items = rows
+        .map(mapRowKeys)
+        .filter(row => isVisible(row) && normalize(row.tipo) === normalize(tipoBuscado))
+        .sort((a, b) => Number(b.año || 0) - Number(a.año || 0));
 
       if (!items.length) {
-        container.innerHTML = '<div class="item"><p class="empty">No hay comunicaciones visibles todavía.</p></div>';
+        container.innerHTML = `<div class="item"><p class="empty">${emptyText}</p></div>`;
         return;
       }
 
-      container.innerHTML = items.map(row => {
-        const texto = highlightName(
-          `${row.año} - ${row.titulo}. ${row.autores}${row.evento_revista_centro ? '. <em class="event">' + row.evento_revista_centro + '</em>' : ''}${row.modalidad ? ' (' + row.modalidad + ')' : ''}.`
-        );
-
-        const links = [];
-        if (row.doi) links.push(`<a href="${row.doi}" target="_blank" rel="noopener noreferrer">DOI</a>`);
-        if (row.pdf_url) links.push(`<a href="${row.pdf_url}" target="_blank" rel="noopener noreferrer">PDF</a>`);
-
-        return `
-          <div class="item">
-            <p>${texto}</p>
-            ${links.length ? `<div class="meta">${links.join('')}</div>` : ''}
-          </div>
-        `;
-      }).join('');
+      container.innerHTML = items.map(renderItem).join('');
     }
 
-    fetch(csvUrl)
+    fetch(gvizUrl)
       .then(r => r.text())
       .then(text => {
-        const data = parseCSV(text);
-        renderComunicaciones(data);
+        const rows = parseGviz(text);
+
+        renderSection('publicaciones-lista', rows, 'Artículo', 'No hay publicaciones visibles todavía.');
+        renderSection('comunicaciones-lista', rows, 'Comunicación', 'No hay comunicaciones visibles todavía.');
+        renderSection('cursos-lista', rows, 'Curso', 'No hay cursos visibles todavía.');
+        renderSection('sesiones-lista', rows, 'Sesión', 'No hay sesiones visibles todavía.');
+        renderSection('proyectos-lista', rows, 'Proyecto', 'No hay proyectos visibles todavía.');
       })
-      .catch(() => {
-        document.getElementById('comunicaciones-lista').innerHTML =
-          '<div class="item"><p class="empty">No se han podido cargar las comunicaciones.</p></div>';
+      .catch(error => {
+        console.error(error);
+        ['publicaciones-lista','comunicaciones-lista','cursos-lista','sesiones-lista','proyectos-lista']
+          .forEach(id => {
+            document.getElementById(id).innerHTML =
+              '<div class="item"><p class="empty">No se han podido cargar los datos automáticamente.</p></div>';
+          });
       });
   </script>
 </body>
