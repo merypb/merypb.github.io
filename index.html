@@ -4,10 +4,142 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>María Prada Bou · CV ampliado</title>
+  <style>
+    :root{
+      --bg:#f8f6f2;
+      --card:#ffffff;
+      --text:#222222;
+      --muted:#6b6b6b;
+      --line:#ddd7cf;
+      --accent:#275c58;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    .wrap{
+      max-width:900px;
+      margin:0 auto;
+      padding:40px 20px 80px;
+    }
+    header{
+      padding:40px 0 24px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:32px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:42px;
+      line-height:1.1;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:18px;
+      margin-bottom:18px;
+    }
+    nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:14px;
+    }
+    nav a{
+      text-decoration:none;
+      color:var(--accent);
+      font-weight:bold;
+    }
+    section{
+      margin-top:42px;
+    }
+    h2{
+      font-size:26px;
+      margin:0 0 18px;
+      padding-bottom:8px;
+      border-bottom:1px solid var(--line);
+    }
+    .item{
+      background:var(--card);
+      padding:18px 20px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      margin-bottom:14px;
+    }
+    .item p{
+      margin:0;
+    }
+    .empty{
+      color:var(--muted);
+      font-style:italic;
+    }
+    footer{
+      margin-top:60px;
+      padding-top:20px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:14px;
+    }
+  </style>
 </head>
 <body>
-  <h1>María Prada Bou</h1>
-  <p>CV ampliado profesional</p>
-  <p>Publicaciones, comunicaciones, formación y proyectos.</p>
+  <div class="wrap">
+    <header>
+      <h1>María Prada Bou</h1>
+      <div class="subtitle">CV ampliado profesional</div>
+      <p>Publicaciones, comunicaciones, formación, sesiones y proyectos en formato ampliado.</p>
+      <nav>
+        <a href="#publicaciones">Publicaciones</a>
+        <a href="#comunicaciones">Comunicaciones</a>
+        <a href="#cursos">Cursos</a>
+        <a href="#sesiones">Sesiones</a>
+        <a href="#proyectos">Proyectos</a>
+      </nav>
+    </header>
+
+    <section id="publicaciones">
+      <h2>Publicaciones</h2>
+      <div class="item">
+        <p class="empty">Aquí aparecerán automáticamente tus publicaciones.</p>
+      </div>
+    </section>
+
+    <section id="comunicaciones">
+      <h2>Comunicaciones</h2>
+      <div class="item">
+        <p>2025 - Prescripción de medicamentos potencialmente inapropiados y su impacto en ingresos hospitalarios y visitas a urgencias en mayores de 73 años. Prada Bou, M., Zamorano Mendez, P., Martinez Simón, J.J., Adeva Antona, S., Risco Martínez, S., Sanz Márquez, S., Pérez Encinas, M.</p>
+      </div>
+      <div class="item">
+        <p>2025 - Efectividad y seguridad de la budesonida viscosa en terapia de mantenimiento a largo plazo en esofagitis eosinofílica en pacientes pediátricos. Rodriguez de Frutos, R., Martin de Rosales Cabrera, A.M., Prada Bou, M., Botija Arcos, G.M., Perez Fernandez, E., Perez Encinas, M.</p>
+      </div>
+    </section>
+
+    <section id="cursos">
+      <h2>Cursos</h2>
+      <div class="item">
+        <p class="empty">Aquí aparecerán automáticamente tus cursos y formación.</p>
+      </div>
+    </section>
+
+    <section id="sesiones">
+      <h2>Sesiones</h2>
+      <div class="item">
+        <p class="empty">Aquí aparecerán automáticamente tus sesiones.</p>
+      </div>
+    </section>
+
+    <section id="proyectos">
+      <h2>Proyectos</h2>
+      <div class="item">
+        <p class="empty">Aquí aparecerán automáticamente tus proyectos.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>CV ampliado actualizado para consulta profesional.</p>
+    </footer>
+  </div>
 </body>
 </html>
