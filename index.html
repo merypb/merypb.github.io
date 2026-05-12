@@ -71,6 +71,16 @@
     .item p{
       margin:0;
     }
+    .meta{
+      margin-top:10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .meta a{
+      color:var(--accent);
+      text-decoration:none;
+      margin-right:12px;
+    }
     .empty{
       color:var(--muted);
       font-style:italic;
@@ -81,6 +91,12 @@
       border-top:1px solid var(--line);
       color:var(--muted);
       font-size:14px;
+    }
+    strong.mine{
+      font-weight:700;
+    }
+    em.event{
+      font-style:italic;
     }
   </style>
 </head>
@@ -101,39 +117,36 @@
 
     <section id="publicaciones">
       <h2>Publicaciones</h2>
-      <div class="item">
-        <p class="empty">Aquí aparecerán automáticamente tus publicaciones.</p>
+      <div id="publicaciones-lista">
+        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus publicaciones.</p></div>
       </div>
     </section>
 
     <section id="comunicaciones">
       <h2>Comunicaciones</h2>
-      <div class="item">
-        <p>2025 - Prescripción de medicamentos potencialmente inapropiados y su impacto en ingresos hospitalarios y visitas a urgencias en mayores de 73 años. Prada Bou, M., Zamorano Mendez, P., Martinez Simón, J.J., Adeva Antona, S., Risco Martínez, S., Sanz Márquez, S., Pérez Encinas, M.</p>
-      </div>
-      <div class="item">
-        <p>2025 - Efectividad y seguridad de la budesonida viscosa en terapia de mantenimiento a largo plazo en esofagitis eosinofílica en pacientes pediátricos. Rodriguez de Frutos, R., Martin de Rosales Cabrera, A.M., Prada Bou, M., Botija Arcos, G.M., Perez Fernandez, E., Perez Encinas, M.</p>
+      <div id="comunicaciones-lista">
+        <div class="item"><p class="empty">Cargando comunicaciones...</p></div>
       </div>
     </section>
 
     <section id="cursos">
       <h2>Cursos</h2>
-      <div class="item">
-        <p class="empty">Aquí aparecerán automáticamente tus cursos y formación.</p>
+      <div id="cursos-lista">
+        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus cursos y formación.</p></div>
       </div>
     </section>
 
     <section id="sesiones">
       <h2>Sesiones</h2>
-      <div class="item">
-        <p class="empty">Aquí aparecerán automáticamente tus sesiones.</p>
+      <div id="sesiones-lista">
+        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus sesiones.</p></div>
       </div>
     </section>
 
     <section id="proyectos">
       <h2>Proyectos</h2>
-      <div class="item">
-        <p class="empty">Aquí aparecerán automáticamente tus proyectos.</p>
+      <div id="proyectos-lista">
+        <div class="item"><p class="empty">Aquí aparecerán automáticamente tus proyectos.</p></div>
       </div>
     </section>
 
@@ -141,5 +154,85 @@
       <p>CV ampliado actualizado para consulta profesional.</p>
     </footer>
   </div>
+
+  <script>
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyx-WzyAbvmXfCa901FS7qwbeYo48_ibDhvDHHUNHpXtqeVFDi3By18fZPOUKDaVi2cbdAULAY_od-/pub?gid=0&single=true&output=csv';
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      const rows = lines.map(line => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          const next = line[i + 1];
+          if (char === '"' && inQuotes && next === '"') {
+            current += '"';
+            i++;
+          } else if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current);
+        return result;
+      });
+      const headers = rows[0].map(h => h.trim());
+      return rows.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = (row[i] || '').trim());
+        return obj;
+      });
+    }
+
+    function highlightName(text) {
+      return text.replace(/Prada Bou, M\./g, '<strong class="mine">Prada Bou, M.</strong>');
+    }
+
+    function renderComunicaciones(data) {
+      const container = document.getElementById('comunicaciones-lista');
+      const items = data
+        .filter(row => row.visible?.toLowerCase() === 'sí' && row.tipo === 'Comunicación')
+        .sort((a, b) => Number(b.año) - Number(a.año));
+
+      if (!items.length) {
+        container.innerHTML = '<div class="item"><p class="empty">No hay comunicaciones visibles todavía.</p></div>';
+        return;
+      }
+
+      container.innerHTML = items.map(row => {
+        const texto = highlightName(
+          `${row.año} - ${row.titulo}. ${row.autores}${row.evento_revista_centro ? '. <em class="event">' + row.evento_revista_centro + '</em>' : ''}${row.modalidad ? ' (' + row.modalidad + ')' : ''}.`
+        );
+
+        const links = [];
+        if (row.doi) links.push(`<a href="${row.doi}" target="_blank" rel="noopener noreferrer">DOI</a>`);
+        if (row.pdf_url) links.push(`<a href="${row.pdf_url}" target="_blank" rel="noopener noreferrer">PDF</a>`);
+
+        return `
+          <div class="item">
+            <p>${texto}</p>
+            ${links.length ? `<div class="meta">${links.join('')}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    fetch(csvUrl)
+      .then(r => r.text())
+      .then(text => {
+        const data = parseCSV(text);
+        renderComunicaciones(data);
+      })
+      .catch(() => {
+        document.getElementById('comunicaciones-lista').innerHTML =
+          '<div class="item"><p class="empty">No se han podido cargar las comunicaciones.</p></div>';
+      });
+  </script>
 </body>
 </html>
