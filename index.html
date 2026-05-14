@@ -4,112 +4,194 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>María Prada Bou · CV ampliado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f8f6f2;
-      --card:#ffffff;
-      --text:#222222;
-      --muted:#6b6b6b;
-      --line:#ddd7cf;
+      --bg:#f7f4ef;
+      --card:#fffdf9;
+      --text:#1f1f1c;
+      --muted:#6d6a64;
+      --line:#ddd6cc;
       --accent:#275c58;
+      --accent-soft:#e6efed;
+      --shadow:0 8px 24px rgba(30, 24, 18, 0.05);
+      --radius:16px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
-      font-family: Arial, sans-serif;
+      font-family:'Inter', Arial, sans-serif;
       background:var(--bg);
       color:var(--text);
-      line-height:1.6;
+      line-height:1.7;
     }
+
     .wrap{
-      max-width:950px;
+      max-width:980px;
       margin:0 auto;
-      padding:40px 20px 80px;
+      padding:48px 20px 88px;
     }
+
     header{
-      padding:40px 0 24px;
+      padding:32px 0 28px;
       border-bottom:1px solid var(--line);
-      margin-bottom:32px;
+      margin-bottom:36px;
     }
+
     h1{
-      margin:0 0 8px;
-      font-size:42px;
-      line-height:1.1;
+      margin:0 0 10px;
+      font-family:'Instrument Serif', Georgia, serif;
+      font-size:52px;
+      line-height:1;
+      font-weight:400;
+      letter-spacing:-0.02em;
     }
+
     .subtitle{
       color:var(--muted);
       font-size:18px;
-      margin-bottom:18px;
+      margin-bottom:14px;
     }
+
+    header p{
+      margin:0;
+      max-width:70ch;
+      color:var(--muted);
+    }
+
     nav{
       display:flex;
       flex-wrap:wrap;
       gap:14px;
-      margin-top:14px;
+      margin-top:18px;
     }
+
     nav a{
       text-decoration:none;
       color:var(--accent);
-      font-weight:bold;
+      font-weight:600;
+      font-size:15px;
     }
+
+    nav a:hover{
+      text-decoration:underline;
+    }
+
     section{
-      margin-top:42px;
+      margin-top:50px;
     }
+
     h2{
-      font-size:26px;
       margin:0 0 18px;
-      padding-bottom:8px;
+      padding-bottom:10px;
       border-bottom:1px solid var(--line);
+      font-family:'Instrument Serif', Georgia, serif;
+      font-size:31px;
+      font-weight:400;
+      letter-spacing:-0.01em;
     }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
     .item{
       background:var(--card);
-      padding:18px 20px;
       border:1px solid var(--line);
-      border-radius:12px;
-      margin-bottom:14px;
+      border-radius:var(--radius);
+      padding:18px 20px 16px;
+      box-shadow:var(--shadow);
     }
+
     .item p{
       margin:0;
+      font-size:15.8px;
+      line-height:1.75;
     }
-    .meta{
-      margin-top:10px;
-      font-size:14px;
-      color:var(--muted);
+
+    .citation-text em.entity{
+      font-family:'Instrument Serif', Georgia, serif;
+      font-size:1.02em;
+      font-style:italic;
+      color:#2d2a26;
     }
-    .meta a{
+
+    .citation-text a.inline-doi{
       color:var(--accent);
       text-decoration:none;
-      margin-right:12px;
+      white-space:nowrap;
     }
-    .empty{
+
+    .citation-text a.inline-doi:hover{
+      text-decoration:underline;
+    }
+
+    .meta{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:4px 10px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+
+    .empty,
+    .loading{
       color:var(--muted);
       font-style:italic;
     }
-    .loading{
-      color:var(--muted);
+
+    strong.mine{
+      font-weight:700;
     }
+
     footer{
-      margin-top:60px;
+      margin-top:72px;
       padding-top:20px;
       border-top:1px solid var(--line);
       color:var(--muted);
       font-size:14px;
     }
-    strong.mine{
-      font-weight:700;
-    }
-    .badge{
-      display:inline-block;
-      margin-top:10px;
-      padding:4px 10px;
-      border-radius:999px;
-      background:#e7f1ef;
-      color:var(--accent);
-      font-size:12px;
-      font-weight:bold;
-      letter-spacing:.02em;
-      text-transform:uppercase;
+
+    @media (max-width: 720px){
+      .wrap{
+        padding:32px 16px 64px;
+      }
+
+      h1{
+        font-size:42px;
+      }
+
+      h2{
+        font-size:27px;
+      }
+
+      .item{
+        padding:16px 16px 14px;
+      }
+
+      .item p{
+        font-size:15px;
+      }
     }
   </style>
 </head>
@@ -130,35 +212,35 @@
 
     <section id="publicaciones">
       <h2>Publicaciones</h2>
-      <div id="publicaciones-lista">
+      <div id="publicaciones-lista" class="list">
         <div class="item"><p class="loading">Cargando publicaciones...</p></div>
       </div>
     </section>
 
     <section id="comunicaciones">
       <h2>Comunicaciones</h2>
-      <div id="comunicaciones-lista">
+      <div id="comunicaciones-lista" class="list">
         <div class="item"><p class="loading">Cargando comunicaciones...</p></div>
       </div>
     </section>
 
     <section id="cursos">
       <h2>Cursos y formación</h2>
-      <div id="cursos-lista">
+      <div id="cursos-lista" class="list">
         <div class="item"><p class="loading">Cargando cursos...</p></div>
       </div>
     </section>
 
     <section id="sesiones">
       <h2>Sesiones</h2>
-      <div id="sesiones-lista">
+      <div id="sesiones-lista" class="list">
         <div class="item"><p class="loading">Cargando sesiones...</p></div>
       </div>
     </section>
 
     <section id="proyectos">
       <h2>Proyectos</h2>
-      <div id="proyectos-lista">
+      <div id="proyectos-lista" class="list">
         <div class="item"><p class="loading">Cargando proyectos...</p></div>
       </div>
     </section>
@@ -184,10 +266,29 @@
         .replace(/[\u0300-\u036f]/g, '');
     }
 
+    function escapeHtml(str) {
+      return cleanValue(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     function highlightName(text) {
       return cleanValue(text)
         .replace(/Prada Bou, M\./g, '<strong class="mine">Prada Bou, M.</strong>')
         .replace(/María Prada Bou/g, '<strong class="mine">María Prada Bou</strong>');
+    }
+
+    function isHighlighted(value) {
+      const v = normalize(value);
+      return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
+    }
+
+    function yearValue(value) {
+      const n = parseInt(cleanValue(value), 10);
+      return Number.isNaN(n) ? 0 : n;
     }
 
     function mapRow(row) {
@@ -212,16 +313,6 @@
       };
     }
 
-    function isHighlighted(value) {
-      const v = normalize(value);
-      return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
-    }
-
-    function yearValue(value) {
-      const n = parseInt(cleanValue(value), 10);
-      return Number.isNaN(n) ? 0 : n;
-    }
-
     function compareItems(a, b) {
       const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
       const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
@@ -240,29 +331,63 @@
       return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
     }
 
-    function renderItem(row) {
-      let texto = row.texto_cv;
+    function formatInlineDoi(doi) {
+      if (!doi) return '';
+      const safe = escapeHtml(doi);
+      return ` <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">DOI</a>`;
+    }
 
-      if (!texto) {
-        texto =
-          (row.año ? row.año + '. ' : '') +
-          (row.titulo ? row.titulo : '') +
-          (row.autores ? '. ' + row.autores : '') +
-          (row.entidad_evento ? '. ' + row.entidad_evento : '') + '.';
+    function formatEntity(entity) {
+      if (!entity) return '';
+      return `<em class="entity">${escapeHtml(entity)}</em>`;
+    }
+
+    function buildFallbackText(row) {
+      const bits = [];
+
+      if (row.autores) bits.push(highlightName(escapeHtml(row.autores)));
+      if (row.titulo) bits.push(escapeHtml(row.titulo));
+      if (row.entidad_evento) bits.push(formatEntity(row.entidad_evento));
+      if (row.año) bits.push(escapeHtml(row.año));
+
+      let text = bits.join('. ');
+      if (text && !text.endsWith('.')) text += '.';
+      text += formatInlineDoi(row.doi);
+
+      return text;
+    }
+
+    function styleCitationText(row) {
+      let text = row.texto_cv ? escapeHtml(row.texto_cv) : buildFallbackText(row);
+
+      if (row.entidad_evento) {
+        const escapedEntity = escapeHtml(row.entidad_evento).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedEntity, 'g');
+        text = text.replace(regex, formatEntity(row.entidad_evento));
       }
 
-      texto = highlightName(texto).replace(/\.\./g, '.');
+      text = highlightName(text);
 
-      const links = [];
       if (row.doi) {
-        links.push(`<a href="${row.doi}" target="_blank" rel="noopener noreferrer">DOI</a>`);
+        const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const doiRegex = new RegExp(`DOI:\\s*${doiEscaped}`, 'g');
+        text = text.replace(doiRegex, `DOI:${formatInlineDoi(row.doi)}`);
       }
+
+      text = text.replace(/\.\./g, '.');
+
+      return text;
+    }
+
+    function renderItem(row) {
+      const texto = styleCitationText(row);
 
       return `
         <div class="item">
-          <p>${texto}</p>
-          ${isHighlighted(row.destacado) ? '<div class="badge">Destacado</div>' : ''}
-          ${links.length ? `<div class="meta">${links.join('')}</div>` : ''}
+          <p class="citation-text">${texto}</p>
+          <div class="meta">
+            ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
+          </div>
         </div>
       `;
     }
