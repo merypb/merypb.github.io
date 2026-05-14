@@ -6,18 +6,19 @@
   <title>María Prada Bou · CV ampliado</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#f7f4ef;
-      --card:#fffdf9;
-      --text:#1f1f1c;
-      --muted:#6d6a64;
-      --line:#ddd6cc;
-      --accent:#275c58;
-      --accent-soft:#e6efed;
-      --shadow:0 8px 24px rgba(30, 24, 18, 0.05);
+      --card:#fffdfa;
+      --text:#23211e;
+      --muted:#6e6a63;
+      --line:#ddd5ca;
+      --accent:#2f615b;
+      --accent-soft:#e6efec;
+      --shadow:0 10px 30px rgba(34, 27, 20, 0.05);
       --radius:16px;
+      --content:980px;
     }
 
     *{box-sizing:border-box}
@@ -25,75 +26,102 @@
 
     body{
       margin:0;
-      font-family:'Inter', Arial, sans-serif;
+      font-family:'Source Serif 4', Georgia, serif;
       background:var(--bg);
       color:var(--text);
-      line-height:1.7;
+      line-height:1.75;
     }
 
     .wrap{
-      max-width:980px;
+      max-width:var(--content);
       margin:0 auto;
-      padding:48px 20px 88px;
+      padding:44px 20px 88px;
     }
 
     header{
-      padding:32px 0 28px;
+      padding:28px 0 24px;
       border-bottom:1px solid var(--line);
-      margin-bottom:36px;
+      margin-bottom:30px;
     }
 
     h1{
-      margin:0 0 10px;
-      font-family:'Instrument Serif', Georgia, serif;
-      font-size:52px;
-      line-height:1;
-      font-weight:400;
-      letter-spacing:-0.02em;
+      margin:0 0 8px;
+      font-family:'Inter', Arial, sans-serif;
+      font-size:44px;
+      line-height:1.05;
+      letter-spacing:-0.03em;
     }
 
     .subtitle{
       color:var(--muted);
-      font-size:18px;
+      font-family:'Inter', Arial, sans-serif;
+      font-size:17px;
       margin-bottom:14px;
     }
 
     header p{
       margin:0;
-      max-width:70ch;
+      max-width:72ch;
       color:var(--muted);
+      font-size:17px;
     }
 
     nav{
       display:flex;
       flex-wrap:wrap;
       gap:14px;
-      margin-top:18px;
+      margin-top:16px;
+      font-family:'Inter', Arial, sans-serif;
     }
 
     nav a{
-      text-decoration:none;
       color:var(--accent);
+      text-decoration:none;
       font-weight:600;
-      font-size:15px;
+      font-size:14px;
     }
 
     nav a:hover{
       text-decoration:underline;
     }
 
+    .toolbar{
+      margin-top:28px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      font-family:'Inter', Arial, sans-serif;
+    }
+
+    .toolbar label{
+      font-size:14px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .toolbar select{
+      appearance:none;
+      border:1px solid var(--line);
+      background:var(--card);
+      color:var(--text);
+      border-radius:999px;
+      padding:10px 14px;
+      font:inherit;
+    }
+
     section{
-      margin-top:50px;
+      margin-top:48px;
     }
 
     h2{
       margin:0 0 18px;
       padding-bottom:10px;
       border-bottom:1px solid var(--line);
-      font-family:'Instrument Serif', Georgia, serif;
-      font-size:31px;
-      font-weight:400;
-      letter-spacing:-0.01em;
+      font-family:'Inter', Arial, sans-serif;
+      font-size:28px;
+      line-height:1.1;
+      letter-spacing:-0.02em;
     }
 
     .list{
@@ -112,21 +140,30 @@
 
     .item p{
       margin:0;
-      font-size:15.8px;
-      line-height:1.75;
+      font-size:17px;
+    }
+
+    .citation-text{
+      max-width:75ch;
     }
 
     .citation-text em.entity{
-      font-family:'Instrument Serif', Georgia, serif;
-      font-size:1.02em;
       font-style:italic;
-      color:#2d2a26;
+    }
+
+    .citation-text .course-title{
+      font-family:'Inter', Arial, sans-serif;
+      font-weight:600;
+      letter-spacing:-0.01em;
     }
 
     .citation-text a.inline-doi{
       color:var(--accent);
       text-decoration:none;
       white-space:nowrap;
+      font-family:'Inter', Arial, sans-serif;
+      font-size:.92em;
+      font-weight:600;
     }
 
     .citation-text a.inline-doi:hover{
@@ -139,6 +176,7 @@
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
+      font-family:'Inter', Arial, sans-serif;
     }
 
     .badge{
@@ -162,6 +200,11 @@
 
     strong.mine{
       font-weight:700;
+      font-family:'Inter', Arial, sans-serif;
+    }
+
+    .hidden{
+      display:none !important;
     }
 
     footer{
@@ -169,28 +212,34 @@
       padding-top:20px;
       border-top:1px solid var(--line);
       color:var(--muted);
+      font-family:'Inter', Arial, sans-serif;
       font-size:14px;
     }
 
     @media (max-width: 720px){
       .wrap{
-        padding:32px 16px 64px;
+        padding:30px 16px 64px;
       }
 
       h1{
-        font-size:42px;
+        font-size:36px;
       }
 
       h2{
-        font-size:27px;
+        font-size:24px;
       }
 
       .item{
-        padding:16px 16px 14px;
+        padding:16px;
       }
 
       .item p{
-        font-size:15px;
+        font-size:16px;
+      }
+
+      .toolbar{
+        flex-direction:column;
+        align-items:flex-start;
       }
     }
   </style>
@@ -201,6 +250,7 @@
       <h1>María Prada Bou</h1>
       <div class="subtitle">CV ampliado profesional</div>
       <p>Publicaciones, comunicaciones, formación, sesiones y proyectos en formato ampliado.</p>
+
       <nav>
         <a href="#publicaciones">Publicaciones</a>
         <a href="#comunicaciones">Comunicaciones</a>
@@ -208,38 +258,45 @@
         <a href="#sesiones">Sesiones</a>
         <a href="#proyectos">Proyectos</a>
       </nav>
+
+      <div class="toolbar">
+        <label for="year-filter">Filtrar por año</label>
+        <select id="year-filter">
+          <option value="">Todos</option>
+        </select>
+      </div>
     </header>
 
-    <section id="publicaciones">
-      <h2>Publicaciones</h2>
+    <section id="publicaciones-section">
+      <h2 id="publicaciones">Publicaciones</h2>
       <div id="publicaciones-lista" class="list">
         <div class="item"><p class="loading">Cargando publicaciones...</p></div>
       </div>
     </section>
 
-    <section id="comunicaciones">
-      <h2>Comunicaciones</h2>
+    <section id="comunicaciones-section">
+      <h2 id="comunicaciones">Comunicaciones</h2>
       <div id="comunicaciones-lista" class="list">
         <div class="item"><p class="loading">Cargando comunicaciones...</p></div>
       </div>
     </section>
 
-    <section id="cursos">
-      <h2>Cursos y formación</h2>
+    <section id="cursos-section">
+      <h2 id="cursos">Cursos y formación</h2>
       <div id="cursos-lista" class="list">
         <div class="item"><p class="loading">Cargando cursos...</p></div>
       </div>
     </section>
 
-    <section id="sesiones">
-      <h2>Sesiones</h2>
+    <section id="sesiones-section">
+      <h2 id="sesiones">Sesiones</h2>
       <div id="sesiones-lista" class="list">
         <div class="item"><p class="loading">Cargando sesiones...</p></div>
       </div>
     </section>
 
-    <section id="proyectos">
-      <h2>Proyectos</h2>
+    <section id="proyectos-section">
+      <h2 id="proyectos">Proyectos</h2>
       <div id="proyectos-lista" class="list">
         <div class="item"><p class="loading">Cargando proyectos...</p></div>
       </div>
@@ -253,6 +310,7 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv';
+    let allRows = [];
 
     function cleanValue(v) {
       if (v === null || v === undefined) return '';
@@ -317,16 +375,12 @@
       const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
       const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
 
-      if (destacadoB !== destacadoA) {
-        return destacadoB - destacadoA;
-      }
+      if (destacadoB !== destacadoA) return destacadoB - destacadoA;
 
       const yearA = yearValue(a.año);
       const yearB = yearValue(b.año);
 
-      if (yearB !== yearA) {
-        return yearB - yearA;
-      }
+      if (yearB !== yearA) return yearB - yearA;
 
       return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
     }
@@ -334,7 +388,7 @@
     function formatInlineDoi(doi) {
       if (!doi) return '';
       const safe = escapeHtml(doi);
-      return ` <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">DOI</a>`;
+      return ` DOI: <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     }
 
     function formatEntity(entity) {
@@ -366,12 +420,18 @@
         text = text.replace(regex, formatEntity(row.entidad_evento));
       }
 
+      if (normalize(row.tipo) === 'curso' && row.titulo) {
+        const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const titleRegex = new RegExp(escapedTitle, 'g');
+        text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
+      }
+
       text = highlightName(text);
 
       if (row.doi) {
         const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const doiRegex = new RegExp(`DOI:\\s*${doiEscaped}`, 'g');
-        text = text.replace(doiRegex, `DOI:${formatInlineDoi(row.doi)}`);
+        text = text.replace(doiRegex, formatInlineDoi(row.doi).trim());
       }
 
       text = text.replace(/\.\./g, '.');
@@ -392,20 +452,50 @@
       `;
     }
 
-    function renderSection(containerId, rows, tipoBuscado, emptyText) {
+    function filterByYear(rows) {
+      const selectedYear = cleanValue(document.getElementById('year-filter').value);
+      if (!selectedYear) return rows;
+      return rows.filter(row => cleanValue(row.año) === selectedYear);
+    }
+
+    function renderSection(sectionId, containerId, rows, tipoBuscado, emptyText) {
+      const section = document.getElementById(sectionId);
       const container = document.getElementById(containerId);
 
-      const items = rows
+      const items = filterByYear(rows)
         .map(mapRow)
         .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
         .sort(compareItems);
 
       if (!items.length) {
-        container.innerHTML = `<div class="item"><p class="empty">${emptyText}</p></div>`;
+        section.classList.add('hidden');
+        container.innerHTML = '';
         return;
       }
 
+      section.classList.remove('hidden');
       container.innerHTML = items.map(renderItem).join('');
+    }
+
+    function populateYearFilter(rows) {
+      const select = document.getElementById('year-filter');
+      const years = [...new Set(
+        rows
+          .map(r => cleanValue(r.año))
+          .filter(Boolean)
+      )].sort((a, b) => Number(b) - Number(a));
+
+      select.innerHTML =
+        '<option value="">Todos</option>' +
+        years.map(year => `<option value="${year}">${year}</option>`).join('');
+    }
+
+    function renderAll() {
+      renderSection('publicaciones-section', 'publicaciones-lista', allRows, 'Artículo', 'No hay publicaciones visibles todavía.');
+      renderSection('comunicaciones-section', 'comunicaciones-lista', allRows, 'Comunicación', 'No hay comunicaciones visibles todavía.');
+      renderSection('cursos-section', 'cursos-lista', allRows, 'Curso', 'No hay cursos visibles todavía.');
+      renderSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión', 'No hay sesiones visibles todavía.');
+      renderSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto', 'No hay proyectos visibles todavía.');
     }
 
     Papa.parse(csvUrl, {
@@ -413,13 +503,11 @@
       header: true,
       skipEmptyLines: true,
       complete: function(results) {
-        const rows = results.data;
+        allRows = results.data;
+        populateYearFilter(allRows);
+        renderAll();
 
-        renderSection('publicaciones-lista', rows, 'Artículo', 'No hay publicaciones visibles todavía.');
-        renderSection('comunicaciones-lista', rows, 'Comunicación', 'No hay comunicaciones visibles todavía.');
-        renderSection('cursos-lista', rows, 'Curso', 'No hay cursos visibles todavía.');
-        renderSection('sesiones-lista', rows, 'Sesión', 'No hay sesiones visibles todavía.');
-        renderSection('proyectos-lista', rows, 'Proyecto', 'No hay proyectos visibles todavía.');
+        document.getElementById('year-filter').addEventListener('change', renderAll);
       },
       error: function(error) {
         console.error(error);
