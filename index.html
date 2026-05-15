@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>María Prada Bou · CV ampliado</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -122,6 +122,15 @@
       font-size:28px;
       line-height:1.1;
       letter-spacing:-0.02em;
+    }
+
+    h3{
+      margin:26px 0 14px;
+      font-family:'Inter', Arial, sans-serif;
+      font-size:18px;
+      line-height:1.2;
+      color:var(--accent);
+      letter-spacing:-0.01em;
     }
 
     .list{
@@ -269,15 +278,34 @@
 
     <section id="publicaciones-section">
       <h2 id="publicaciones">Publicaciones</h2>
-      <div id="publicaciones-lista" class="list">
-        <div class="item"><p class="loading">Cargando publicaciones...</p></div>
+
+      <div id="publicaciones-articulos-block">
+        <h3>Artículos científicos</h3>
+        <div id="publicaciones-articulos-lista" class="list"></div>
+      </div>
+
+      <div id="publicaciones-grupo-block">
+        <h3>Colaboraciones en grupo de estudio</h3>
+        <div id="publicaciones-grupo-lista" class="list"></div>
       </div>
     </section>
 
     <section id="comunicaciones-section">
       <h2 id="comunicaciones">Comunicaciones</h2>
-      <div id="comunicaciones-lista" class="list">
-        <div class="item"><p class="loading">Cargando comunicaciones...</p></div>
+
+      <div id="comunicaciones-nacional-block">
+        <h3>Nacionales</h3>
+        <div id="comunicaciones-nacional-lista" class="list"></div>
+      </div>
+
+      <div id="comunicaciones-europea-block">
+        <h3>Europeas</h3>
+        <div id="comunicaciones-europea-lista" class="list"></div>
+      </div>
+
+      <div id="comunicaciones-internacional-block">
+        <h3>Internacionales</h3>
+        <div id="comunicaciones-internacional-lista" class="list"></div>
       </div>
     </section>
 
@@ -458,25 +486,6 @@
       return rows.filter(row => cleanValue(row.año) === selectedYear);
     }
 
-    function renderSection(sectionId, containerId, rows, tipoBuscado, emptyText) {
-      const section = document.getElementById(sectionId);
-      const container = document.getElementById(containerId);
-
-      const items = filterByYear(rows)
-        .map(mapRow)
-        .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
-        .sort(compareItems);
-
-      if (!items.length) {
-        section.classList.add('hidden');
-        container.innerHTML = '';
-        return;
-      }
-
-      section.classList.remove('hidden');
-      container.innerHTML = items.map(renderItem).join('');
-    }
-
     function populateYearFilter(rows) {
       const select = document.getElementById('year-filter');
       const years = [...new Set(
@@ -490,12 +499,92 @@
         years.map(year => `<option value="${year}">${year}</option>`).join('');
     }
 
+    function renderBlock(blockId, listId, items, emptyText = '') {
+      const block = document.getElementById(blockId);
+      const list = document.getElementById(listId);
+
+      if (!items.length) {
+        block.classList.add('hidden');
+        list.innerHTML = emptyText ? `<div class="item"><p class="empty">${emptyText}</p></div>` : '';
+        return;
+      }
+
+      block.classList.remove('hidden');
+      list.innerHTML = items.map(renderItem).join('');
+    }
+
+    function renderSimpleSection(sectionId, listId, rows, tipoBuscado, emptyText) {
+      const section = document.getElementById(sectionId);
+      const items = filterByYear(rows)
+        .map(mapRow)
+        .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
+        .sort(compareItems);
+
+      if (!items.length) {
+        section.classList.add('hidden');
+        document.getElementById(listId).innerHTML = '';
+        return;
+      }
+
+      section.classList.remove('hidden');
+      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
+    }
+
+    function renderPublicaciones(rows) {
+      const section = document.getElementById('publicaciones-section');
+      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'articulo');
+
+      const articulos = filtered
+        .filter(row => normalize(row.subtipo) !== 'colaboracion grupo de estudio')
+        .sort(compareItems);
+
+      const grupo = filtered
+        .filter(row => normalize(row.subtipo) === 'colaboracion grupo de estudio')
+        .sort(compareItems);
+
+      renderBlock('publicaciones-articulos-block', 'publicaciones-articulos-lista', articulos);
+      renderBlock('publicaciones-grupo-block', 'publicaciones-grupo-lista', grupo);
+
+      if (!articulos.length && !grupo.length) {
+        section.classList.add('hidden');
+      } else {
+        section.classList.remove('hidden');
+      }
+    }
+
+    function renderComunicaciones(rows) {
+      const section = document.getElementById('comunicaciones-section');
+      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'comunicacion');
+
+      const nacionales = filtered
+        .filter(row => normalize(row.subtipo) === 'nacional')
+        .sort(compareItems);
+
+      const europeas = filtered
+        .filter(row => normalize(row.subtipo) === 'europea')
+        .sort(compareItems);
+
+      const internacionales = filtered
+        .filter(row => normalize(row.subtipo) === 'internacional')
+        .sort(compareItems);
+
+      renderBlock('comunicaciones-nacional-block', 'comunicaciones-nacional-lista', nacionales);
+      renderBlock('comunicaciones-europea-block', 'comunicaciones-europea-lista', europeas);
+      renderBlock('comunicaciones-internacional-block', 'comunicaciones-internacional-lista', internacionales);
+
+      if (!nacionales.length && !europeas.length && !internacionales.length) {
+        section.classList.add('hidden');
+      } else {
+        section.classList.remove('hidden');
+      }
+    }
+
     function renderAll() {
-      renderSection('publicaciones-section', 'publicaciones-lista', allRows, 'Artículo', 'No hay publicaciones visibles todavía.');
-      renderSection('comunicaciones-section', 'comunicaciones-lista', allRows, 'Comunicación', 'No hay comunicaciones visibles todavía.');
-      renderSection('cursos-section', 'cursos-lista', allRows, 'Curso', 'No hay cursos visibles todavía.');
-      renderSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión', 'No hay sesiones visibles todavía.');
-      renderSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto', 'No hay proyectos visibles todavía.');
+      renderPublicaciones(allRows);
+      renderComunicaciones(allRows);
+      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso', 'No hay cursos visibles todavía.');
+      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión', 'No hay sesiones visibles todavía.');
+      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto', 'No hay proyectos visibles todavía.');
     }
 
     Papa.parse(csvUrl, {
@@ -511,10 +600,10 @@
       },
       error: function(error) {
         console.error(error);
-        ['publicaciones-lista','comunicaciones-lista','cursos-lista','sesiones-lista','proyectos-lista']
+        ['publicaciones-articulos-lista','publicaciones-grupo-lista','comunicaciones-nacional-lista','comunicaciones-europea-lista','comunicaciones-internacional-lista','cursos-lista','sesiones-lista','proyectos-lista']
           .forEach(id => {
-            document.getElementById(id).innerHTML =
-              '<div class="item"><p class="empty">No se han podido cargar los datos automáticamente.</p></div>';
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = '<div class="item"><p class="empty">No se han podido cargar los datos automáticamente.</p></div>';
           });
       }
     });
