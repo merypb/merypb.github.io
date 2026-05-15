@@ -356,14 +356,12 @@
     function highlightOwnName(text) {
       let html = cleanValue(text);
 
-      const patterns = [
-        /Maria\s+Prada[\s-]?Bou/gi,
-        /María\s+Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou,\s*M\.?/gi,
-        /M\.?\s*Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou,\s*Maria/gi,
-        /Prada[\s-]?Bou,\s*María/gi
-      ];
+     const patterns = [
+      /Mar[ií]a\s+Prada[\s-]?Bou/gi,
+      /Prada[\s-]?Bou,\s*Mar[ií]a/gi,
+      /Prada[\s-]?Bou,\s*M\.?/gi,
+      /M\.?\s*Prada[\s-]?Bou/gi,
+      /Prada[\s-]?Bou\s+M\.?/gi
 
       patterns.forEach((pattern) => {
         html = html.replace(pattern, match => `<strong class="mine">${match}</strong>`);
