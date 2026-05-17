@@ -97,8 +97,7 @@
     }
 
     .sidebar{
-      position:sticky;
-      top:20px;
+      position:relative;
       align-self:start;
     }
 
@@ -174,9 +173,11 @@
       width:100%;
       height:auto;
       border-radius:18px;
-      border:1px solid color-mix(in srgb, var(--text) 10%, transparent);
+      border:1px solid color-mix(in srgb, var(--text) 6%, transparent);
       box-shadow:none;
       background:transparent;
+      object-fit:cover;
+      object-position:center 12%;
     }
 
     .profile-name{
@@ -456,6 +457,7 @@
       font-size:15.5px;
       line-height:1.82;
       overflow-wrap:anywhere;
+      white-space:normal;
     }
 
     .citation-text em.entity{ font-style:italic; }
@@ -500,6 +502,72 @@
       text-transform:uppercase;
     }
 
+    .comm-card{
+      display:grid;
+      grid-template-columns:72px minmax(0,1fr);
+      gap:18px;
+      padding:18px 0 20px;
+      border-top:1px solid var(--line);
+      align-items:start;
+    }
+
+    .comm-year{
+      color:var(--faint);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      padding-top:3px;
+    }
+
+    .comm-body{
+      min-width:0;
+      background:var(--surface-2);
+      border:1px solid color-mix(in srgb, var(--text) 6%, transparent);
+      border-radius:18px;
+      padding:16px 16px 14px;
+    }
+
+    .comm-top{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .comm-kicker{
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--accent);
+    }
+
+    .comm-title{
+      margin:0;
+      font-size:15.5px;
+      line-height:1.75;
+      color:var(--text);
+      overflow-wrap:anywhere;
+      white-space:normal;
+    }
+
+    .comm-title em.entity{
+      font-style:italic;
+    }
+
+    .comm-title a.inline-doi{
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:700;
+      word-break:break-word;
+    }
+
+    .comm-title a.inline-doi:hover{
+      text-decoration:underline;
+    }
+
     .empty,
     .loading{
       margin:0;
@@ -519,11 +587,6 @@
     @media (max-width:1080px){
       .site-grid{
         grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        position:relative;
-        top:auto;
       }
 
       .sidebar-nav{
@@ -579,12 +642,16 @@
         align-items:flex-start;
       }
 
-      .item{
+      .item,
+      .comm-card{
         grid-template-columns:1fr;
         gap:8px;
       }
 
-      .year-col{ padding-top:0; }
+      .year-col,
+      .comm-year{
+        padding-top:0;
+      }
 
       .sidebar-nav{
         grid-template-columns:1fr;
@@ -602,6 +669,10 @@
 
       .profile-name{ font-size:26px; }
       .profile-role{ font-size:14px; }
+
+      .comm-body{
+        padding:14px 14px 12px;
+      }
     }
 
     @media (max-width:480px){
@@ -629,7 +700,8 @@
         font-size:26px;
       }
 
-      .citation-text{
+      .citation-text,
+      .comm-title{
         font-size:15px;
         line-height:1.74;
       }
@@ -677,11 +749,12 @@
             <div class="portrait-block">
               <img
                 class="profile-photo-real"
-                src="./maria-prada.png"
+                src="./maria.prada.png"
                 alt="Fotografía profesional de María Prada Bou"
                 width="420"
                 height="520"
                 loading="eager"
+                onerror="this.style.display='none'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;border:1px solid color-mix(in srgb, var(--text) 6%, transparent); border-radius:18px; padding:18px; text-align:center; color:var(--muted); font-size:14px; background:var(--surface-2);&quot;>No se ha encontrado la imagen. Revisa el nombre del archivo y la ruta.</div>');"
               >
             </div>
 
@@ -691,7 +764,8 @@
             <div class="cta-stack">
               <a
                 class="button primary"
-                href="https://drive.google.com/file/d/1rSXqfWqhsC63sia7Gejo41SaUweEvtH7/view?usp=drive_link"
+                href="./cv-maria-prada-bou.pdf"
+                type="application/pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -909,6 +983,11 @@
       return Number.isNaN(n) ? 0 : n;
     }
 
+    function manualOrderValue(value) {
+      const n = parseInt(cleanValue(value), 10);
+      return Number.isNaN(n) ? Number.MAX_SAFE_INTEGER : n;
+    }
+
     function mapRow(row) {
       return {
         id: cleanValue(row.id),
@@ -928,11 +1007,12 @@
         ects: cleanValue(row.ects),
         tipo_presentacion: cleanValue(row.tipo_presentacion),
         doi: cleanValue(row.doi),
-        texto_cv: cleanValue(row.texto_cv)
+        texto_cv: cleanValue(row.texto_cv),
+        orden_manual: cleanValue(row.orden_manual)
       };
     }
 
-    function compareItems(a, b) {
+    function compareDefault(a, b) {
       const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
       const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
       if (destacadoB !== destacadoA) return destacadoB - destacadoA;
@@ -944,65 +1024,44 @@
       return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
     }
 
+    function compareCommunications(a, b) {
+      const orderA = manualOrderValue(a.orden_manual);
+      const orderB = manualOrderValue(b.orden_manual);
+
+      if (orderA !== orderB) return orderA - orderB;
+      return compareDefault(a, b);
+    }
+
     function formatInlineDoi(doi) {
       if (!doi) return '';
       const safe = escapeHtml(doi);
       return ` DOI: <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     }
 
-    function formatEntity(entity) {
-      if (!entity) return '';
-      return `<em class="entity">${escapeHtml(entity)}</em>`;
-    }
-
     function buildFallbackText(row) {
       const bits = [];
       if (row.autores) bits.push(escapeHtml(row.autores));
       if (row.titulo) bits.push(escapeHtml(row.titulo));
-      if (row.entidad_evento) bits.push(formatEntity(row.entidad_evento));
+      if (row.entidad_evento) bits.push(`<em class="entity">${escapeHtml(row.entidad_evento)}</em>`);
       if (row.año) bits.push(escapeHtml(row.año));
 
       let text = bits.join('. ');
       if (text && !text.endsWith('.')) text += '.';
       text += formatInlineDoi(row.doi);
-      return text;
+      return highlightOwnName(text.replace(/\.\./g, '.'));
     }
 
-    function styleCitationText(row) {
-      let text = row.texto_cv ? escapeHtml(row.texto_cv) : buildFallbackText(row);
+    function styleTextFromTextoCV(rawText) {
+      return highlightOwnName(escapeHtml(rawText));
+    }
 
-      if (row.entidad_evento) {
-        const escapedEntity = escapeHtml(row.entidad_evento).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(escapedEntity, 'g');
-        text = text.replace(regex, formatEntity(row.entidad_evento));
-      }
-
-      if (normalize(row.tipo) === 'curso' && row.titulo) {
-        const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const titleRegex = new RegExp(escapedTitle, 'g');
-        text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
-      }
-
-      if (row.doi) {
-        const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const doiRegex = new RegExp(`DOI:\\s*${doiEscaped}`, 'gi');
-        text = text.replace(doiRegex, formatInlineDoi(row.doi).trim());
-
-        if (!/DOI:/i.test(text) && !text.includes('inline-doi')) {
-          text = text.replace(/\s*$/, '');
-          if (!text.endsWith('.')) text += '.';
-          text += formatInlineDoi(row.doi);
-        }
-      }
-
-      text = highlightOwnName(text);
-      text = text.replace(/\.\./g, '.');
-
-      return text;
+    function getDisplayText(row) {
+      if (row.texto_cv) return styleTextFromTextoCV(row.texto_cv);
+      return buildFallbackText(row);
     }
 
     function renderItem(row) {
-      const texto = styleCitationText(row);
+      const texto = getDisplayText(row);
       return `
         <article class="item">
           <div class="year-col">${escapeHtml(row.año || '—')}</div>
@@ -1011,6 +1070,32 @@
             <div class="meta">
               ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
             </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function communicationKicker(row) {
+      const parts = [];
+      if (row.subtipo) parts.push(escapeHtml(row.subtipo));
+      if (row.tipo_presentacion) parts.push(escapeHtml(row.tipo_presentacion));
+      if (row.lugar) parts.push(escapeHtml(row.lugar));
+      return parts.join(' · ');
+    }
+
+    function renderCommunicationItem(row) {
+      const texto = getDisplayText(row);
+      const kicker = communicationKicker(row);
+
+      return `
+        <article class="comm-card">
+          <div class="comm-year">${escapeHtml(row.año || '—')}</div>
+          <div class="comm-body">
+            <div class="comm-top">
+              ${kicker ? `<span class="comm-kicker">${kicker}</span>` : ''}
+              ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
+            </div>
+            <p class="comm-title">${texto}</p>
           </div>
         </article>
       `;
@@ -1061,7 +1146,7 @@
         years.map(year => `<option value="${year}">${year}</option>`).join('');
     }
 
-    function renderBlock(blockId, listId, items) {
+    function renderBlock(blockId, listId, items, renderer = renderItem) {
       const block = document.getElementById(blockId);
       const list = document.getElementById(listId);
 
@@ -1072,7 +1157,7 @@
       }
 
       block.classList.remove('hidden');
-      list.innerHTML = items.map(renderItem).join('');
+      list.innerHTML = items.map(renderer).join('');
       return items.length;
     }
 
@@ -1080,7 +1165,7 @@
       const section = document.getElementById(sectionId);
       const items = filteredMappedRows(rows)
         .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
-        .sort(compareItems);
+        .sort(compareDefault);
 
       if (!items.length) {
         section.classList.add('hidden');
@@ -1099,11 +1184,11 @@
 
       const articulos = filtered
         .filter(row => normalize(row.subtipo) !== 'colaboracion grupo de estudio')
-        .sort(compareItems);
+        .sort(compareDefault);
 
       const grupo = filtered
         .filter(row => normalize(row.subtipo) === 'colaboracion grupo de estudio')
-        .sort(compareItems);
+        .sort(compareDefault);
 
       const total = renderBlock('publicaciones-articulos-block', 'publicaciones-articulos-lista', articulos)
         + renderBlock('publicaciones-grupo-block', 'publicaciones-grupo-lista', grupo);
@@ -1118,20 +1203,20 @@
 
       const nacionales = filtered
         .filter(row => normalize(row.subtipo) === 'nacional')
-        .sort(compareItems);
+        .sort(compareCommunications);
 
       const europeas = filtered
         .filter(row => normalize(row.subtipo) === 'europea')
-        .sort(compareItems);
+        .sort(compareCommunications);
 
       const internacionales = filtered
         .filter(row => normalize(row.subtipo) === 'internacional')
-        .sort(compareItems);
+        .sort(compareCommunications);
 
       const total =
-        renderBlock('comunicaciones-nacional-block', 'comunicaciones-nacional-lista', nacionales) +
-        renderBlock('comunicaciones-europea-block', 'comunicaciones-europea-lista', europeas) +
-        renderBlock('comunicaciones-internacional-block', 'comunicaciones-internacional-lista', internacionales);
+        renderBlock('comunicaciones-nacional-block', 'comunicaciones-nacional-lista', nacionales, renderCommunicationItem) +
+        renderBlock('comunicaciones-europea-block', 'comunicaciones-europea-lista', europeas, renderCommunicationItem) +
+        renderBlock('comunicaciones-internacional-block', 'comunicaciones-internacional-lista', internacionales, renderCommunicationItem);
 
       section.classList.toggle('hidden', total === 0);
       return total;
