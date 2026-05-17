@@ -1,352 +1,278 @@
 <!doctype html>
 <html lang="es" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>María Prada Bou · CV ampliado</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>María Prada Bou · CV ampliado</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#f7f4ef;
-      --surface:#ffffff;
-      --surface-2:#f3efe8;
-      --text:#1f1c18;
-      --muted:#6f6a63;
-      --faint:#9a9187;
-      --line:rgba(31,28,24,.12);
-      --accent:#1f6b63;
-      --accent-soft:#e6f2ef;
-      --accent-ink:#144843;
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-      --shadow:0 10px 30px rgba(0,0,0,.06);
-      --radius:18px;
-      --content:1180px;
-      --sidebar:300px;
-    }
+<style>
+:root{
+  --bg:#f7f4ef;
+  --surface:#fff;
+  --text:#1f1c18;
+  --muted:#6f6a63;
+  --line:rgba(0,0,0,.08);
+  --accent:#1f6b63;
+  --accent-soft:#e6f2ef;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.06);
+  --sidebar:290px;
+}
 
-    [data-theme="dark"]{
-      --bg:#141210;
-      --surface:#1c1916;
-      --surface-2:#24201c;
-      --text:#eee6dd;
-      --muted:#b3aa9f;
-      --faint:#857c72;
-      --line:rgba(255,255,255,.08);
-      --accent:#7fc7bd;
-      --accent-soft:#20322f;
-      --accent-ink:#d6efea;
-      --shadow:0 18px 50px rgba(0,0,0,.35);
-    }
+[data-theme="dark"]{
+  --bg:#141210;
+  --surface:#1c1916;
+  --text:#eee;
+  --muted:#b3aa9f;
+  --line:rgba(255,255,255,.08);
+  --accent:#7fc7bd;
+  --accent-soft:#20322f;
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter, Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-    }
+body{
+  margin:0;
+  font-family:Inter;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    a{color:inherit}
+.shell{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+}
 
-    /* Layout */
-    .shell{
-      max-width:var(--content);
-      margin:auto;
-      padding:28px 18px 80px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:var(--sidebar) 1fr;
+  gap:28px;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:var(--sidebar) 1fr;
-      gap:32px;
-    }
+/* SIDEBAR */
+.sidebar{
+  position:sticky;
+  top:18px;
+}
 
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr;}
-    }
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+}
 
-    /* Sidebar */
-    .sidebar{
-      position:sticky;
-      top:20px;
-      align-self:start;
-    }
+/* 🔥 FIX FOTO RESPONSIVE */
+.photo{
+  width:100%;
+  max-width:220px;   /* 👈 clave */
+  height:auto;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  border-radius:18px;
+  display:block;
+  margin:0 auto 12px;
+}
 
-    .card{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:20px;
-    }
+/* NOMBRE */
+.name{
+  font-size:28px;
+  font-weight:800;
+  margin:10px 0 4px;
+}
 
-    .brand{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:16px;
-    }
+/* EMAIL COPIABLE */
+.email{
+  font-size:13px;
+  color:var(--muted);
+  user-select:all;
+  display:block;
+  margin:4px 0;
+}
 
-    .mark{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:700;
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
+/* NAV */
+.nav a{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  text-decoration:none;
+  border-radius:10px;
+  font-weight:600;
+}
+.nav a:hover{
+  background:var(--accent-soft);
+}
 
-    .theme-btn{
-      border:1px solid var(--line);
-      background:var(--surface);
-      width:40px;
-      height:40px;
-      border-radius:999px;
-      cursor:pointer;
-    }
+/* HERO */
+.hero{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:var(--shadow);
+}
 
-    .photo{
-      width:100%;
-      border-radius:22px;
-      margin-bottom:16px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--line);
-    }
+.hero h1{
+  font-family:'Instrument Serif';
+  font-size:42px;
+  margin:0;
+}
 
-    .name{
-      font-size:30px;
-      font-weight:800;
-      margin:0;
-      letter-spacing:-.02em;
-    }
+/* SECTIONS */
+.section{
+  margin-top:18px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
 
-    .role{
-      color:var(--muted);
-      font-size:14px;
-      margin:6px 0 12px;
-    }
+.section h2{
+  font-family:'Instrument Serif';
+  margin:0 0 10px;
+}
 
-    /* 🔬 subtle professional hint */
-    .specialty{
-      display:inline-block;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--accent);
-      background:var(--accent-soft);
-      padding:6px 10px;
-      border-radius:999px;
-      margin-bottom:14px;
-    }
+/* ITEMS */
+.item{
+  display:grid;
+  grid-template-columns:70px 1fr;
+  gap:14px;
+  padding:12px 0;
+  border-top:1px solid var(--line);
+}
 
-    .nav a{
-      display:flex;
-      justify-content:space-between;
-      padding:10px 12px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:600;
-      font-size:14px;
-    }
+.year{
+  font-size:11px;
+  color:var(--muted);
+}
 
-    .nav a:hover{
-      background:var(--surface-2);
-      transform:translateX(2px);
-    }
+/* MOBILE FIX */
+@media (max-width: 900px){
+  .grid{
+    grid-template-columns:1fr;
+  }
 
-    /* Hero */
-    .hero{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:34px;
-      box-shadow:var(--shadow);
-      margin-bottom:22px;
-      position:relative;
-      overflow:hidden;
-    }
+  .sidebar{
+    position:relative;
+  }
 
-    .hero h1{
-      font-family:'Instrument Serif', serif;
-      font-size:44px;
-      margin:0 0 10px;
-      letter-spacing:-.02em;
-    }
-
-    .hero p{
-      color:var(--muted);
-      max-width:60ch;
-    }
-
-    /* Sections */
-    .section{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:26px;
-      margin-bottom:22px;
-      box-shadow:var(--shadow);
-      transition:.2s ease;
-    }
-
-    .section:hover{
-      transform:translateY(-2px);
-    }
-
-    .head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      border-bottom:1px solid var(--line);
-      padding-bottom:12px;
-      margin-bottom:14px;
-    }
-
-    .head h2{
-      font-family:'Instrument Serif', serif;
-      font-size:28px;
-      margin:0;
-    }
-
-    .item{
-      display:grid;
-      grid-template-columns:70px 1fr;
-      gap:16px;
-      padding:14px 0;
-      border-top:1px solid var(--line);
-    }
-
-    .year{
-      font-size:11px;
-      letter-spacing:.08em;
-      color:var(--faint);
-      font-weight:700;
-    }
-
-    .text{
-      font-size:15.5px;
-    }
-
-    .badge{
-      display:inline-block;
-      font-size:10px;
-      padding:4px 8px;
-      border-radius:999px;
-      background:var(--accent-soft);
-      color:var(--accent);
-      margin-top:6px;
-      font-weight:700;
-    }
-
-    /* Buttons */
-    .btn{
-      display:block;
-      padding:10px 14px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:600;
-      text-align:center;
-      margin-top:8px;
-    }
-
-    .primary{
-      background:var(--accent);
-      color:white;
-    }
-
-    .secondary{
-      border:1px solid var(--line);
-    }
-  </style>
+  .photo{
+    max-width:160px; /* 🔥 CLAVE: no gigante en móvil */
+  }
+}
+</style>
 </head>
 
 <body>
 
 <div class="shell">
-  <div class="grid">
+<div class="grid">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="card">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<div class="card">
 
-        <div class="brand">
-          <div class="mark">CV ampliado</div>
-          <button class="theme-btn" data-theme-toggle>🌓</button>
-        </div>
+<img class="photo" src="./maria.prada.png">
 
-        <img class="photo" src="./maria.prada.png">
+<div class="name">María Prada Bou</div>
 
-        <div class="specialty">Farmacia Hospitalaria</div>
+<div style="font-size:12px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase">
+Farmacia Hospitalaria
+</div>
 
-        <h1 class="name">María Prada Bou</h1>
-        <div class="role">Farmacéutica hospitalaria · investigación clínica</div>
+<!-- EMAILS COPIABLES -->
+<div style="margin-top:10px">
+<span class="email">maria.prada.07@gmail.com</span>
+<span class="email">maria.prada@salud.madrid.org</span>
+</div>
 
-        <a class="btn primary" href="mailto:maria.prada.07@gmail.com">Contacto</a>
-        <a class="btn secondary" href="mailto:maria.prada@salud.madrid.org">Correo institucional</a>
+<nav class="nav">
+<a href="#pub">Publicaciones</a>
+<a href="#com">Comunicaciones</a>
+<a href="#cur">Cursos</a>
+<a href="#ses">Sesiones</a>
+<a href="#pro">Proyectos</a>
+</nav>
 
-        <nav class="nav" style="margin-top:14px">
-          <a href="#publicaciones">Publicaciones <span>01</span></a>
-          <a href="#comunicaciones">Comunicaciones <span>02</span></a>
-          <a href="#cursos">Cursos <span>03</span></a>
-          <a href="#sesiones">Sesiones <span>04</span></a>
-          <a href="#proyectos">Proyectos <span>05</span></a>
-        </nav>
+</div>
+</aside>
 
-      </div>
-    </aside>
+<!-- MAIN -->
+<main>
 
-    <!-- MAIN -->
-    <main>
+<div class="hero">
+<h1>Trayectoria profesional y académica</h1>
+<p>CV ampliado conectado dinámicamente a Google Sheets.</p>
+</div>
 
-      <header class="hero">
-        <h1>Trayectoria profesional y académica</h1>
-        <p>CV ampliado actualizado dinámicamente desde Google Sheets con producción científica, formación y actividad investigadora en entorno hospitalario.</p>
-      </header>
+<section class="section" id="pub">
+<h2>Publicaciones</h2>
+<div id="publicaciones-lista"></div>
+</section>
 
-      <section class="section" id="publicaciones">
-        <div class="head"><h2>Publicaciones</h2></div>
-        <div id="publicaciones-lista"></div>
-      </section>
+<section class="section" id="com">
+<h2>Comunicaciones</h2>
+<div id="comunicaciones-lista"></div>
+</section>
 
-      <section class="section" id="comunicaciones">
-        <div class="head"><h2>Comunicaciones</h2></div>
-        <div id="comunicaciones-lista"></div>
-      </section>
+<section class="section" id="cur">
+<h2>Cursos</h2>
+<div id="cursos-lista"></div>
+</section>
 
-      <section class="section" id="cursos">
-        <div class="head"><h2>Cursos</h2></div>
-        <div id="cursos-lista"></div>
-      </section>
+<section class="section" id="ses">
+<h2>Sesiones</h2>
+<div id="sesiones-lista"></div>
+</section>
 
-      <section class="section" id="sesiones">
-        <div class="head"><h2>Sesiones</h2></div>
-        <div id="sesiones-lista"></div>
-      </section>
+<section class="section" id="pro">
+<h2>Proyectos</h2>
+<div id="proyectos-lista"></div>
+</section>
 
-      <section class="section" id="proyectos">
-        <div class="head"><h2>Proyectos</h2></div>
-        <div id="proyectos-lista"></div>
-      </section>
+</main>
 
-    </main>
-
-  </div>
+</div>
 </div>
 
 <script>
-const btn = document.querySelector('[data-theme-toggle]');
-btn.onclick = () => {
-  document.documentElement.dataset.theme =
-    document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-};
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv";
+
+function renderItem(r){
+  return `
+  <div class="item">
+    <div class="year">${r.año || ""}</div>
+    <div>${r.titulo || ""}</div>
+  </div>`;
+}
+
+Papa.parse(csvUrl,{
+  download:true,
+  header:true,
+  complete:(res)=>{
+    const rows=res.data;
+
+    document.getElementById("publicaciones-lista").innerHTML =
+      rows.filter(r=>r.tipo==="articulo").map(renderItem).join("");
+
+    document.getElementById("comunicaciones-lista").innerHTML =
+      rows.filter(r=>r.tipo==="comunicacion").map(renderItem).join("");
+
+    document.getElementById("cursos-lista").innerHTML =
+      rows.filter(r=>r.tipo==="curso").map(renderItem).join("");
+
+    document.getElementById("sesiones-lista").innerHTML =
+      rows.filter(r=>r.tipo==="sesion").map(renderItem).join("");
+
+    document.getElementById("proyectos-lista").innerHTML =
+      rows.filter(r=>r.tipo==="proyecto").map(renderItem).join("");
+  }
+});
 </script>
 
 </body>
