@@ -181,9 +181,11 @@
     }
 
     .portrait-wrap{
-      max-width:170px;
+      max-width:220px;
       margin:0 auto 20px;
-      position:relative;
+      padding:10px;
+      border-radius:26px;
+      background:linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 72%, white 28%), transparent);
     }
 
     .portrait-wrap::before{
@@ -197,16 +199,13 @@
     }
 
     .profile-photo-real{
-      position:relative;
-      z-index:1;
       width:100%;
-      aspect-ratio:4/5;
-      object-fit:cover;
-      object-position:center 14%;
+      height:auto;
+      object-fit:contain;
       border-radius:22px;
       border:1px solid var(--line-strong);
       box-shadow:var(--shadow-md);
-      background:var(--surface-2);
+      background:var(--surface);
     }
 
     .profile-name{
