@@ -29,7 +29,7 @@
       --radius-md:16px;
       --radius-lg:24px;
       --content:1240px;
-      --sidebar:290px;
+      --sidebar:310px;
     }
 
     [data-theme="dark"]{
@@ -210,6 +210,17 @@
       line-height:1.45;
     }
 
+    .profile-photo-real{
+      width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;
+      border-radius:20px;
+      border:1px solid var(--line-strong);
+      box-shadow:var(--shadow-md);
+      background:var(--surface-2);
+      margin-bottom:18px;
+    }
+
     .profile-name{
       font-family:'Instrument Serif', Georgia, serif;
       font-size:36px;
@@ -229,7 +240,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      margin-bottom:20px;
+      margin-bottom:16px;
     }
 
     .button{
@@ -273,6 +284,36 @@
       color:var(--muted);
       cursor:default;
       pointer-events:none;
+    }
+
+    .contact-copy{
+      margin-top:8px;
+      padding-top:14px;
+      border-top:1px solid var(--line);
+      margin-bottom:20px;
+    }
+
+    .contact-copy p{
+      margin:0 0 8px;
+      font-size:13px;
+      line-height:1.55;
+      color:var(--muted);
+      word-break:break-word;
+    }
+
+    .contact-copy p:last-child{
+      margin-bottom:0;
+    }
+
+    .contact-copy strong{
+      color:var(--text);
+    }
+
+    .email-copy{
+      user-select:all;
+      -webkit-user-select:all;
+      font-family:inherit;
+      color:var(--accent-ink);
     }
 
     .sidebar-nav{
@@ -474,10 +515,6 @@
       align-items:start;
     }
 
-    .item:first-child{
-      border-top:1px solid var(--line);
-    }
-
     .year-col{
       padding-top:2px;
       color:var(--faint);
@@ -672,7 +709,19 @@
 
             <div class="cta-stack">
               <span class="button primary disabled">CV en PDF · próximamente</span>
-              <a class="button secondary" href="mailto:tuemail@ejemplo.com">Contacto</a>
+
+              <a class="button secondary" href="mailto:maria.prada.07@gmail.com">
+                Escribir a Gmail
+              </a>
+
+              <a class="button secondary" href="mailto:maria.prada@salud.madrid.org">
+                Escribir a correo institucional
+              </a>
+            </div>
+
+            <div class="contact-copy">
+              <p><strong>Correo personal:</strong> <span class="email-copy">maria.prada.07@gmail.com</span></p>
+              <p><strong>Correo institucional:</strong> <span class="email-copy">maria.prada@salud.madrid.org</span></p>
             </div>
 
             <nav class="sidebar-nav" aria-label="Navegación principal">
@@ -880,6 +929,7 @@
         entidad_evento: cleanValue(row.entidad_evento),
         lugar: cleanValue(row.lugar),
         horas: cleanValue(row.horas),
+        ects: cleanValue(row.ects),
         tipo_presentacion: cleanValue(row.tipo_presentacion),
         doi: cleanValue(row.doi),
         texto_cv: cleanValue(row.texto_cv)
