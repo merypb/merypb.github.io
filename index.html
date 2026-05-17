@@ -104,14 +104,12 @@
       position:sticky;
       top:18px;
       align-self:start;
+      z-index: 10;
     }
     
     .sidebar-card{
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
-    }
-
-    .sidebar-card{
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:32px;
@@ -190,42 +188,33 @@
       padding-top:4px;
     }
 
-.portrait-wrap{
-  width:100%;
-  max-width:220px;
-  margin:0 auto 22px;
-  padding:12px;
-  border-radius:32px;
-  position:relative;
-  background:
-    linear-gradient(180deg,
-      color-mix(in srgb, var(--accent-soft) 82%, white 18%),
-      transparent
-    );
-}
+    .portrait-wrap{
+      width:100%;
+      max-width:220px;
+      margin:0 auto 22px;
+      padding:12px;
+      border-radius:32px;
+      position:relative;
+      background:
+        linear-gradient(180deg,
+          color-mix(in srgb, var(--accent-soft) 82%, white 18%),
+          transparent
+        );
+    }
 
-.portrait-wrap::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:32px;
-  border:1px solid color-mix(in srgb, var(--accent) 12%, transparent);
-  pointer-events:none;
-}
-
-.profile-photo-real{
-  width:100%;
-  aspect-ratio:3/4;
-  object-fit:cover;
-  border-radius:24px;
-  border:1px solid var(--line-strong);
-  box-shadow:0 18px 40px rgba(0,0,0,.08);
-  background:var(--surface);
-}
+    .portrait-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:32px;
+      border:1px solid color-mix(in srgb, var(--accent) 12%, transparent);
+      pointer-events:none;
+    }
 
     .profile-photo-real{
       width:100%;
-      height:auto;
+      aspect-ratio:3/4;
+      object-fit:cover;
       border-radius:22px;
       border:1px solid var(--line-strong);
       box-shadow:var(--shadow-md);
@@ -338,43 +327,45 @@
       border-top:1px solid var(--line);
     }
 
-.sidebar-nav a{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  color:var(--text);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:700;
-  border-radius:14px;
-  padding:12px 14px;
-  position:relative;
-  overflow:hidden;
-}
+    .sidebar-nav a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:700;
+      border-radius:14px;
+      padding:12px 14px;
+      position:relative;
+      overflow:hidden;
+    }
 
-.sidebar-nav a::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent-soft) 70%, transparent),
-    transparent
-  );
-  opacity:0;
-  transition:opacity .2s ease;
-}
+    .sidebar-nav a::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent-soft) 70%, transparent),
+        transparent
+      );
+      opacity:0;
+      transition:opacity .2s ease;
+    }
 
-.sidebar-nav a:hover::before{
-  opacity:1;
-}
+    .sidebar-nav a:hover::before,
+    .sidebar-nav a.active::before{
+      opacity:1;
+    }
 
-.sidebar-nav a:hover{
-  background:var(--surface-2);
-  color:var(--accent);
-  transform:translateX(3px);
-}
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active{
+      background:var(--surface-2);
+      color:var(--accent);
+      transform:translateX(3px);
+    }
 
     .main{
       min-width:0;
@@ -483,6 +474,7 @@
       padding:30px 30px 8px;
       box-shadow:var(--shadow-sm);
       margin-bottom:22px;
+      scroll-margin-top: 24px;
     }
 
     .section-head{
@@ -531,6 +523,12 @@
       flex-direction:column;
     }
 
+    /* Animación de entrada para los items */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .item{
       display:grid;
       grid-template-columns:80px minmax(0,1fr);
@@ -538,6 +536,7 @@
       padding:18px 0;
       border-top:1px solid var(--line);
       align-items:start;
+      animation: fadeIn 0.4s ease-out forwards;
     }
 
     .year-col{
@@ -609,11 +608,16 @@
     }
 
     .empty,
-    .loading{
+    .loading,
+    .error-msg{
       margin:0;
       color:var(--muted);
       font-style:italic;
       padding:8px 0 20px;
+    }
+
+    .error-msg {
+      color: #b03a2e;
     }
 
     .hidden{
@@ -769,6 +773,7 @@
       *{
         scroll-behavior:auto !important;
         transition:none !important;
+        animation:none !important;
       }
     }
   </style>
@@ -961,6 +966,28 @@
       });
     }
 
+    // Scroll Spy functionality for the sidebar
+    function initScrollSpy() {
+      const sections = document.querySelectorAll('.section-card');
+      const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              const sectionId = entry.target.querySelector('h2').id;
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+
+      sections.forEach(section => observer.observe(section));
+    }
+
     function cleanValue(v) {
       if (v === null || v === undefined) return '';
       return String(v).trim();
@@ -1106,11 +1133,12 @@
       return text;
     }
 
-    function renderItem(row) {
+    function renderItem(row, index) {
       const texto = styleCitationText(row);
+      const delay = index * 0.03; 
 
       return `
-        <article class="item">
+        <article class="item" style="animation-delay: ${delay}s">
           <div class="year-col">${escapeHtml(row.año || '—')}</div>
           <div class="entry">
             <p class="citation-text">${texto}</p>
@@ -1150,7 +1178,7 @@
       }
 
       block.classList.remove('hidden');
-      list.innerHTML = items.map(renderItem).join('');
+      list.innerHTML = items.map((item, i) => renderItem(item, i)).join('');
     }
 
     function renderSimpleSection(sectionId, listId, rows, tipoBuscado) {
@@ -1167,7 +1195,7 @@
       }
 
       section.classList.remove('hidden');
-      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
+      document.getElementById(listId).innerHTML = items.map((item, i) => renderItem(item, i)).join('');
     }
 
     function renderPublicaciones(rows) {
@@ -1222,41 +1250,50 @@
     function renderAll() {
       renderPublicaciones(allRows);
       renderComunicaciones(allRows);
-      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso');
-      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión');
-      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto');
+      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'curso');
+      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'sesion');
+      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'proyecto');
     }
 
-    initThemeToggle();
+    // Inicialización una vez cargado el DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      initThemeToggle();
+      initScrollSpy();
 
-    Papa.parse(csvUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(results) {
-        allRows = results.data;
-        populateYearFilter(allRows);
-        renderAll();
-        document.getElementById('year-filter').addEventListener('change', renderAll);
-      },
-      error: function(error) {
-        console.error(error);
-        [
-          'publicaciones-articulos-lista',
-          'publicaciones-grupo-lista',
-          'comunicaciones-nacional-lista',
-          'comunicaciones-europea-lista',
-          'comunicaciones-internacional-lista',
-          'cursos-lista',
-          'sesiones-lista',
-          'proyectos-lista'
-        ].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
-          }
-        });
-      }
+      // Escuchar cambios en el filtro
+      const yearFilter = document.getElementById('year-filter');
+      yearFilter.addEventListener('change', renderAll);
+
+      // Cargar CSV
+      Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          allRows = results.data;
+          populateYearFilter(allRows);
+          renderAll();
+        },
+        error: function(err) {
+          console.error('Error al procesar el CSV:', err);
+          const ids = [
+            'publicaciones-articulos-lista',
+            'publicaciones-grupo-lista',
+            'comunicaciones-nacional-lista',
+            'comunicaciones-europea-lista',
+            'comunicaciones-internacional-lista',
+            'cursos-lista',
+            'sesiones-lista',
+            'proyectos-lista'
+          ];
+          ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+              el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="error-msg">No se han podido cargar los datos automáticamente. Por favor, revisa tu conexión o el enlace del Google Sheet.</p></div></article>';
+            }
+          });
+        }
+      });
     });
   </script>
 </body>
