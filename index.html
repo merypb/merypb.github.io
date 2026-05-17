@@ -4,22 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>María Prada Bou · CV ampliado</title>
+<title>María Prada Bou · CV investigador</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
+
 :root{
   --bg:#f6f3ee;
-  --surface:#ffffff;
+  --surface:#fff;
   --text:#1e1c18;
   --muted:#6f6a63;
   --line:rgba(0,0,0,.08);
   --accent:#1f6b63;
   --accent-soft:#e7f3f0;
-  --radius:18px;
   --shadow:0 10px 30px rgba(0,0,0,.06);
+  --radius:18px;
   --sidebar:300px;
 }
 
@@ -70,60 +71,49 @@ body{
 
 .photo{
   width:100%;
-  max-width:210px;
-  margin:auto;
+  max-width:190px;
   display:block;
+  margin:auto;
   border-radius:18px;
-  box-shadow:var(--shadow);
   border:1px solid var(--line);
+  box-shadow:var(--shadow);
 }
 
-.name{
-  font-size:28px;
-  font-weight:800;
-  margin:12px 0 4px;
-}
-
+/* IDENTIDAD */
 .tag{
   display:inline-block;
+  margin-top:10px;
   font-size:11px;
-  letter-spacing:.12em;
+  letter-spacing:.14em;
   text-transform:uppercase;
   color:var(--accent);
   background:var(--accent-soft);
   padding:6px 10px;
   border-radius:999px;
-  margin:8px 0;
 }
 
-/* EMAIL SECTION */
+/* EMAIL */
 .email{
   font-size:13px;
   color:var(--muted);
   user-select:all;
   display:block;
-  margin:4px 0;
+  margin-top:4px;
 }
 
-/* BUTTONS EMAIL */
+/* BUTTONS */
 .btn{
   display:block;
-  padding:10px 12px;
+  padding:10px;
   border-radius:12px;
   text-align:center;
   text-decoration:none;
   font-weight:600;
-  margin-top:6px;
+  margin-top:8px;
 }
 
-.primary{
-  background:var(--accent);
-  color:white;
-}
-
-.secondary{
-  border:1px solid var(--line);
-}
+.primary{background:var(--accent); color:#fff;}
+.secondary{border:1px solid var(--line);}
 
 /* NAV */
 .nav a{
@@ -131,8 +121,8 @@ body{
   justify-content:space-between;
   padding:10px;
   border-radius:10px;
-  text-decoration:none;
   font-weight:600;
+  text-decoration:none;
 }
 .nav a:hover{
   background:var(--accent-soft);
@@ -153,6 +143,21 @@ body{
   margin:0;
 }
 
+/* FILTER BAR */
+.filters{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+select{
+  padding:8px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:var(--surface);
+}
+
 /* SECTIONS */
 .section{
   margin-top:18px;
@@ -168,26 +173,34 @@ body{
   margin:0 0 10px;
 }
 
-/* ITEM */
+/* ITEM (PubMed style) */
 .item{
   display:grid;
   grid-template-columns:70px 1fr;
   gap:14px;
-  padding:12px 0;
+  padding:14px 0;
   border-top:1px solid var(--line);
 }
 
 .year{
   font-size:11px;
   color:var(--muted);
+  letter-spacing:.08em;
+}
+
+/* LOADING */
+.loading{
+  color:var(--muted);
+  font-style:italic;
 }
 
 /* DEBUG */
 #debug{
-  font-size:12px;
-  color:red;
   margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
 }
+
 </style>
 </head>
 
@@ -201,18 +214,15 @@ body{
 
 <img class="photo" src="./maria.prada.png">
 
-<div class="name">María Prada Bou</div>
+<div class="tag">Farmacia Hospitalaria · FH Madrid</div>
 
-<div class="tag">Farmacia Hospitalaria</div>
+<h2 style="margin:10px 0 4px">María Prada Bou</h2>
 
-<!-- EMAILS (COPIABLE + BOTONES) -->
-<div style="margin-top:10px">
 <span class="email">maria.prada.07@gmail.com</span>
 <span class="email">maria.prada@salud.madrid.org</span>
-</div>
 
-<a class="btn primary" href="mailto:maria.prada.07@gmail.com">Enviar correo personal</a>
-<a class="btn secondary" href="mailto:maria.prada@salud.madrid.org">Enviar correo institucional</a>
+<a class="btn primary" href="mailto:maria.prada.07@gmail.com">Correo personal</a>
+<a class="btn secondary" href="mailto:maria.prada@salud.madrid.org">Correo institucional</a>
 
 <nav class="nav" style="margin-top:12px">
 <a href="#pub">Publicaciones</a>
@@ -229,7 +239,19 @@ body{
 
 <div class="hero">
 <h1>Trayectoria profesional y académica</h1>
-<p>CV ampliado conectado dinámicamente a Google Sheets.</p>
+<p>Perfil investigador en entorno hospitalario con producción científica, actividad docente y participación en proyectos clínicos.</p>
+
+<div class="filters">
+<select id="filterYear"><option value="">Todos los años</option></select>
+<select id="filterType">
+<option value="">Todos los tipos</option>
+<option value="articulo">Publicaciones</option>
+<option value="comunicacion">Comunicaciones</option>
+<option value="curso">Cursos</option>
+<option value="sesion">Sesiones</option>
+<option value="proyecto">Proyectos</option>
+</select>
+</div>
 
 <div id="debug"></div>
 </div>
@@ -268,9 +290,13 @@ body{
 
 const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv";
 
-function render(rows, tipo){
+let DATA = [];
+
+function clean(v){ return (v||"").toString().trim(); }
+
+function render(rows, type){
   return rows
-    .filter(r => (r.tipo || "").toLowerCase() === tipo)
+    .filter(r => clean(r.tipo).toLowerCase() === type)
     .map(r => `
       <div class="item">
         <div class="year">${r.año || ""}</div>
@@ -279,36 +305,55 @@ function render(rows, tipo){
     `).join("");
 }
 
+function applyFilters(rows){
+  const y = document.getElementById("filterYear").value;
+  const t = document.getElementById("filterType").value;
+
+  return rows.filter(r=>{
+    const okYear = !y || r.año === y;
+    const okType = !t || clean(r.tipo) === t;
+    return okYear && okType;
+  });
+}
+
+function refresh(){
+  const filtered = applyFilters(DATA);
+
+  document.getElementById("publicaciones").innerHTML = render(filtered,"articulo");
+  document.getElementById("comunicaciones").innerHTML = render(filtered,"comunicacion");
+  document.getElementById("cursos").innerHTML = render(filtered,"curso");
+  document.getElementById("sesiones").innerHTML = render(filtered,"sesion");
+  document.getElementById("proyectos").innerHTML = render(filtered,"proyecto");
+}
+
 Papa.parse(csvUrl,{
   download:true,
   header:true,
   complete:(res)=>{
 
-    const rows = res.data;
+    DATA = res.data.filter(r=>r.tipo);
 
-    document.getElementById("publicaciones").innerHTML =
-      render(rows,"articulo");
+    const years = [...new Set(DATA.map(r=>r.año))].sort().reverse();
+    const sel = document.getElementById("filterYear");
 
-    document.getElementById("comunicaciones").innerHTML =
-      render(rows,"comunicacion");
+    years.forEach(y=>{
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      sel.appendChild(opt);
+    });
 
-    document.getElementById("cursos").innerHTML =
-      render(rows,"curso");
+    sel.onchange = refresh;
+    document.getElementById("filterType").onchange = refresh;
 
-    document.getElementById("sesiones").innerHTML =
-      render(rows,"sesion");
+    refresh();
 
-    document.getElementById("proyectos").innerHTML =
-      render(rows,"proyecto");
-
-    document.getElementById("debug").innerHTML =
+    document.getElementById("debug").textContent =
       "✔ Datos cargados correctamente desde Google Sheets";
-
   },
-  error:(err)=>{
-    document.getElementById("debug").innerHTML =
-      "❌ ERROR cargando Google Sheets. Revisa publicación en web.";
-    console.error(err);
+  error:(e)=>{
+    document.getElementById("debug").textContent =
+      "❌ Error cargando Google Sheets (revisar publicación)";
   }
 });
 
