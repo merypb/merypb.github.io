@@ -7,1172 +7,347 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#f6f3ee;
-      --surface:#fbfaf7;
-      --surface-2:#f1ece4;
-      --surface-3:#e8e1d7;
-      --text:#201c17;
+      --bg:#f7f4ef;
+      --surface:#ffffff;
+      --surface-2:#f3efe8;
+      --text:#1f1c18;
       --muted:#6f6a63;
-      --faint:#9d968d;
-      --line:#ded7cd;
-      --line-strong:#cfc6bb;
-      --accent:#1d625c;
-      --accent-soft:#e4efed;
-      --accent-ink:#184c48;
-      --shadow-sm:0 1px 2px rgba(33, 28, 22, .05);
-      --shadow-md:0 10px 30px rgba(33, 28, 22, .06);
-      --radius-sm:10px;
-      --radius-md:16px;
-      --radius-lg:24px;
-      --content:1240px;
-      --sidebar:310px;
+      --faint:#9a9187;
+      --line:rgba(31,28,24,.12);
+      --accent:#1f6b63;
+      --accent-soft:#e6f2ef;
+      --accent-ink:#144843;
+
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --radius:18px;
+      --content:1180px;
+      --sidebar:300px;
     }
 
     [data-theme="dark"]{
-      --bg:#171513;
-      --surface:#1d1a17;
-      --surface-2:#25211d;
-      --surface-3:#2b2621;
-      --text:#ece6df;
-      --muted:#b0a79d;
-      --faint:#867d74;
-      --line:#332e29;
-      --line-strong:#433c35;
-      --accent:#6ca39e;
-      --accent-soft:#223431;
-      --accent-ink:#dbe9e6;
-      --shadow-sm:0 1px 2px rgba(0,0,0,.2);
-      --shadow-md:0 14px 34px rgba(0,0,0,.24);
+      --bg:#141210;
+      --surface:#1c1916;
+      --surface-2:#24201c;
+      --text:#eee6dd;
+      --muted:#b3aa9f;
+      --faint:#857c72;
+      --line:rgba(255,255,255,.08);
+      --accent:#7fc7bd;
+      --accent-soft:#20322f;
+      --accent-ink:#d6efea;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
     }
 
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
     body{
       margin:0;
+      font-family:Inter, Arial, sans-serif;
       background:var(--bg);
       color:var(--text);
-      font-family:'Inter', Arial, sans-serif;
-      line-height:1.65;
+      line-height:1.7;
       -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
     }
 
-    a, button, select{
-      transition:background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
-    }
+    a{color:inherit}
 
-    img{max-width:100%; display:block}
-
-    .skip-link{
-      position:absolute;
-      left:12px;
-      top:-48px;
-      background:var(--accent);
-      color:#fff;
-      padding:10px 14px;
-      border-radius:10px;
-      text-decoration:none;
-      z-index:50;
-    }
-
-    .skip-link:focus{
-      top:12px;
-    }
-
-    .site-shell{
+    /* Layout */
+    .shell{
       max-width:var(--content);
-      margin:0 auto;
+      margin:auto;
       padding:28px 18px 80px;
     }
 
-    .site-grid{
+    .grid{
       display:grid;
-      grid-template-columns:var(--sidebar) minmax(0, 1fr);
-      gap:34px;
-      align-items:start;
+      grid-template-columns:var(--sidebar) 1fr;
+      gap:32px;
     }
 
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr;}
+    }
+
+    /* Sidebar */
     .sidebar{
       position:sticky;
       top:20px;
       align-self:start;
     }
 
-    .sidebar-card{
+    .card{
       background:var(--surface);
       border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      padding:22px;
-      box-shadow:var(--shadow-sm);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
     }
 
     .brand{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .brand-mark{
-      display:inline-flex;
       align-items:center;
-      gap:10px;
-      color:var(--text);
-      text-decoration:none;
-    }
-
-    .brand-mark svg{
-      width:28px;
-      height:28px;
-      color:var(--accent);
-      flex:none;
-    }
-
-    .brand-text{
-      font-size:13px;
-      line-height:1.2;
-      color:var(--muted);
-      letter-spacing:.04em;
-      text-transform:uppercase;
-      font-weight:700;
-    }
-
-    .theme-toggle{
-      width:42px;
-      height:42px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:var(--surface);
-      color:var(--text);
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:var(--shadow-sm);
-    }
-
-    .theme-toggle:hover{
-      border-color:var(--line-strong);
-      transform:translateY(-1px);
-    }
-
-    .profile-card{
-      margin-top:10px;
-      padding-top:8px;
-    }
-
-    .profile-photo{
-      width:100%;
-      aspect-ratio:4/5;
-      border-radius:20px;
-      border:1px solid var(--line-strong);
-      background:
-        linear-gradient(180deg, color-mix(in srgb, var(--surface) 75%, white 25%), var(--surface-2));
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:22px;
-      box-shadow:var(--shadow-md);
-      margin-bottom:18px;
-    }
-
-    .profile-photo-badge{
-      width:64px;
-      height:64px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:var(--surface);
-      border:1px solid var(--line);
-      color:var(--accent);
-      font-weight:800;
-      font-size:22px;
-      margin-bottom:12px;
-    }
-
-    .profile-photo strong{
-      font-size:15px;
-      margin-bottom:4px;
-    }
-
-    .profile-photo span{
-      font-size:13px;
-      color:var(--muted);
-      max-width:20ch;
-      line-height:1.45;
-    }
-
-      .profile-photo-real{
-        width:100%;
-        aspect-ratio:4/5;
-        object-fit:cover;
-        object-position:center 20%;
-        border-radius:20px;
-        border:1px solid var(--line-strong);
-        box-shadow:var(--shadow-md);
-        background:var(--surface-2);
-        margin-bottom:18px;
-      }
-
-    .profile-name{
-      font-family:'Instrument Serif', Georgia, serif;
-      font-size:36px;
-      line-height:1;
-      letter-spacing:-.03em;
-      margin:0 0 10px;
-    }
-
-    .profile-role{
-      color:var(--muted);
-      font-size:15px;
-      margin:0 0 18px;
-      max-width:24ch;
-    }
-
-    .cta-stack{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
       margin-bottom:16px;
     }
 
-    .button{
-      min-height:46px;
-      display:inline-flex;
+    .mark{
+      display:flex;
       align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:0 14px;
-      border-radius:12px;
-      text-decoration:none;
-      font-size:14px;
+      gap:10px;
       font-weight:700;
-      border:1px solid transparent;
-    }
-
-    .button.primary{
-      background:var(--accent);
-      color:#fff;
-      border-color:var(--accent);
-    }
-
-    .button.primary:hover{
-      filter:brightness(.97);
-      transform:translateY(-1px);
-    }
-
-    .button.secondary{
-      background:transparent;
-      color:var(--accent);
-      border-color:var(--line-strong);
-    }
-
-    .button.secondary:hover{
-      background:var(--surface-2);
-    }
-
-    .button.disabled{
-      background:var(--surface-2);
-      border-color:var(--line);
-      color:var(--muted);
-      cursor:default;
-      pointer-events:none;
-    }
-
-    .contact-copy{
-      margin-top:8px;
-      padding-top:14px;
-      border-top:1px solid var(--line);
-      margin-bottom:20px;
-    }
-
-    .contact-copy p{
-      margin:0 0 8px;
-      font-size:13px;
-      line-height:1.55;
-      color:var(--muted);
-      word-break:break-word;
-    }
-
-    .contact-copy p:last-child{
-      margin-bottom:0;
-    }
-
-    .contact-copy strong{
-      color:var(--text);
-    }
-
-    .email-copy{
-      user-select:all;
-      -webkit-user-select:all;
-      font-family:inherit;
-      color:var(--accent-ink);
-    }
-
-    .sidebar-nav{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      padding-top:6px;
-      border-top:1px solid var(--line);
-    }
-
-    .sidebar-nav a{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      color:var(--text);
-      text-decoration:none;
-      font-size:14px;
-      font-weight:600;
-      border-radius:12px;
-      padding:11px 12px;
-    }
-
-    .sidebar-nav a span:last-child{
-      color:var(--faint);
       font-size:12px;
-      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
     }
 
-    .sidebar-nav a:hover{
-      background:var(--surface-2);
+    .theme-btn{
+      border:1px solid var(--line);
+      background:var(--surface);
+      width:40px;
+      height:40px;
+      border-radius:999px;
+      cursor:pointer;
+    }
+
+    .photo{
+      width:100%;
+      border-radius:22px;
+      margin-bottom:16px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+    }
+
+    .name{
+      font-size:30px;
+      font-weight:800;
+      margin:0;
+      letter-spacing:-.02em;
+    }
+
+    .role{
+      color:var(--muted);
+      font-size:14px;
+      margin:6px 0 12px;
+    }
+
+    /* 🔬 subtle professional hint */
+    .specialty{
+      display:inline-block;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
       color:var(--accent);
+      background:var(--accent-soft);
+      padding:6px 10px;
+      border-radius:999px;
+      margin-bottom:14px;
     }
 
-    .main{
-      min-width:0;
+    .nav a{
+      display:flex;
+      justify-content:space-between;
+      padding:10px 12px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
     }
 
+    .nav a:hover{
+      background:var(--surface-2);
+      transform:translateX(2px);
+    }
+
+    /* Hero */
     .hero{
       background:var(--surface);
       border:1px solid var(--line);
-      border-radius:32px;
+      border-radius:28px;
       padding:34px;
-      box-shadow:var(--shadow-sm);
+      box-shadow:var(--shadow);
       margin-bottom:22px;
       position:relative;
       overflow:hidden;
     }
 
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:auto -80px -80px auto;
-      width:220px;
-      height:220px;
-      border-radius:999px;
-      background:radial-gradient(circle, color-mix(in srgb, var(--accent-soft) 90%, transparent 10%) 0%, transparent 72%);
-      pointer-events:none;
+    .hero h1{
+      font-family:'Instrument Serif', serif;
+      font-size:44px;
+      margin:0 0 10px;
+      letter-spacing:-.02em;
     }
 
-    .eyebrow{
-      margin:0 0 14px;
-      color:var(--accent);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-weight:800;
-    }
-
-      .hero h1{
-        margin:0 0 10px;
-        font-family:'Inter', Arial, sans-serif;
-        font-size:clamp(2.2rem, 3.4vw, 3.6rem);
-        line-height:1.02;
-        letter-spacing:-.03em;
-        font-weight:800;
-        max-width:none;
-        white-space:nowrap;
-      }
-    @media (max-width: 760px){
-  .hero h1{
-    white-space:normal;
-    font-size:clamp(2rem, 8vw, 2.8rem);
-    line-height:1.02;
-  }
-}
-
-    .hero-intro{
-      margin:0 0 22px;
+    .hero p{
       color:var(--muted);
-      font-size:17px;
-      max-width:58ch;
+      max-width:60ch;
     }
 
-    .hero-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:22px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      min-height:34px;
-      padding:0 12px;
-      border-radius:999px;
-      background:var(--surface-2);
-      border:1px solid var(--line);
-      color:var(--text);
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .hero-toolbar{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:14px;
-      padding-top:18px;
-      border-top:1px solid var(--line);
-    }
-
-    .hero-toolbar label{
-      font-size:14px;
-      color:var(--muted);
-      font-weight:600;
-    }
-
-    .hero-toolbar select{
-      appearance:none;
-      min-width:136px;
-      border:1px solid var(--line-strong);
-      background:var(--surface);
-      color:var(--text);
-      border-radius:12px;
-      padding:11px 14px;
-      font:inherit;
-    }
-
-    .hero-note{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .section-card{
+    /* Sections */
+    .section{
       background:var(--surface);
       border:1px solid var(--line);
-      border-radius:28px;
-      padding:30px 30px 10px;
-      box-shadow:var(--shadow-sm);
+      border-radius:24px;
+      padding:26px;
       margin-bottom:22px;
+      box-shadow:var(--shadow);
+      transition:.2s ease;
     }
 
-    .section-head{
+    .section:hover{
+      transform:translateY(-2px);
+    }
+
+    .head{
       display:flex;
-      align-items:end;
       justify-content:space-between;
-      gap:20px;
-      padding-bottom:14px;
+      align-items:end;
       border-bottom:1px solid var(--line);
-      margin-bottom:10px;
+      padding-bottom:12px;
+      margin-bottom:14px;
     }
 
-    .section-head h2{
+    .head h2{
+      font-family:'Instrument Serif', serif;
+      font-size:28px;
       margin:0;
-      font-family:'Instrument Serif', Georgia, serif;
-      font-size:38px;
-      line-height:1;
-      letter-spacing:-.04em;
-      font-weight:400;
-    }
-
-    .section-caption{
-      color:var(--faint);
-      font-size:13px;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      white-space:nowrap;
-    }
-
-    .subgroup{
-      margin-bottom:12px;
-    }
-
-    .subgroup-title{
-      margin:18px 0 0;
-      padding:16px 0 10px;
-      color:var(--accent);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .list{
-      display:flex;
-      flex-direction:column;
     }
 
     .item{
       display:grid;
-      grid-template-columns:76px minmax(0,1fr);
-      gap:18px;
-      padding:18px 0;
+      grid-template-columns:70px 1fr;
+      gap:16px;
+      padding:14px 0;
       border-top:1px solid var(--line);
-      align-items:start;
     }
 
-    .year-col{
-      padding-top:2px;
-      color:var(--faint);
-      font-size:12px;
-      font-weight:800;
+    .year{
+      font-size:11px;
       letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .entry{
-      min-width:0;
-    }
-
-    .citation-text{
-      margin:0;
-      max-width:75ch;
-      color:var(--text);
-      font-size:15.5px;
-      line-height:1.7;
-    }
-
-    .citation-text em.entity{
-      font-style:italic;
-    }
-
-    .citation-text .course-title{
+      color:var(--faint);
       font-weight:700;
-      letter-spacing:-.01em;
     }
 
-    .citation-text a.inline-doi{
-      color:var(--accent);
-      text-decoration:none;
-      font-weight:600;
-      word-break:break-word;
-    }
-
-    .citation-text a.inline-doi:hover{
-      text-decoration:underline;
-    }
-
-    strong.mine{
-      font-weight:800;
-      color:var(--accent-ink);
-    }
-
-    .meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
+    .text{
+      font-size:15.5px;
     }
 
     .badge{
-      display:inline-flex;
-      align-items:center;
-      min-height:26px;
-      padding:0 10px;
+      display:inline-block;
+      font-size:10px;
+      padding:4px 8px;
       border-radius:999px;
       background:var(--accent-soft);
       color:var(--accent);
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.06em;
-      text-transform:uppercase;
+      margin-top:6px;
+      font-weight:700;
     }
 
-    .empty,
-    .loading{
-      margin:0;
-      color:var(--muted);
-      font-style:italic;
-      padding:8px 0 20px;
+    /* Buttons */
+    .btn{
+      display:block;
+      padding:10px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:600;
+      text-align:center;
+      margin-top:8px;
     }
 
-    .hidden{
-      display:none !important;
+    .primary{
+      background:var(--accent);
+      color:white;
     }
 
-    footer{
-      padding:10px 4px 0;
-      color:var(--faint);
-      font-size:13px;
-    }
-
-    @media (max-width: 1020px){
-      .site-grid{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        position:relative;
-        top:auto;
-      }
-
-      .sidebar-nav{
-        display:grid;
-        grid-template-columns:repeat(2, minmax(0,1fr));
-      }
-
-      .profile-role{
-        max-width:none;
-      }
-    }
-
-    @media (max-width: 760px){
-      .site-shell{
-        padding:18px 14px 54px;
-      }
-
-      .sidebar-card,
-      .hero,
-      .section-card{
-        border-radius:22px;
-      }
-
-      .hero{
-        padding:24px 20px;
-      }
-
-      .section-card{
-        padding:22px 20px 6px;
-      }
-
-      .hero h1{
-        max-width:none;
-      }
-
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .item{
-        grid-template-columns:1fr;
-        gap:8px;
-      }
-
-      .year-col{
-        padding-top:0;
-      }
-
-      .sidebar-nav{
-        grid-template-columns:1fr;
-      }
-
-      .hero-toolbar{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{
-        scroll-behavior:auto !important;
-        transition:none !important;
-      }
+    .secondary{
+      border:1px solid var(--line);
     }
   </style>
 </head>
+
 <body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <div class="site-shell">
-    <div class="site-grid">
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <div class="brand">
-            <a class="brand-mark" href="#top" aria-label="Ir al inicio">
-              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-                <path d="M16 46V18h8.5l7.5 11.5L39.5 18H48v28h-7V29.8L32 43.2 23 29.8V46h-7Z" fill="currentColor"/>
-              </svg>
-              <div class="brand-text">CV ampliado</div>
-            </a>
+<div class="shell">
+  <div class="grid">
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            </button>
-          </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="card">
 
-          <div class="profile-card">
-                  <img
-                    class="profile-photo-real"
-                    src="./maria.prada.png"
-                    alt="Fotografía profesional de María Prada Bou"
-                    width="480"
-                    height="600"
-                    loading="eager"
-                  >
-            <h2 class="profile-name">María Prada Bou</h2>
-            <p class="profile-role">Farmacéutica hospitalaria · perfil académico y asistencial.</p>
-
-            <div class="cta-stack">
-              <span class="button primary disabled">CV en PDF · próximamente</span>
-
-              <a class="button secondary" href="mailto:maria.prada.07@gmail.com">
-                Escribir a Gmail
-              </a>
-
-              <a class="button secondary" href="mailto:maria.prada@salud.madrid.org">
-                Escribir a correo institucional
-              </a>
-            </div>
-
-            <div class="contact-copy">
-              <p><strong>Correo personal:</strong> <span class="email-copy">maria.prada.07@gmail.com</span></p>
-              <p><strong>Correo institucional:</strong> <span class="email-copy">maria.prada@salud.madrid.org</span></p>
-            </div>
-
-            <nav class="sidebar-nav" aria-label="Navegación principal">
-              <a href="#publicaciones"><span>Publicaciones</span><span>01</span></a>
-              <a href="#comunicaciones"><span>Comunicaciones</span><span>02</span></a>
-              <a href="#cursos"><span>Cursos</span><span>03</span></a>
-              <a href="#sesiones"><span>Sesiones</span><span>04</span></a>
-              <a href="#proyectos"><span>Proyectos</span><span>05</span></a>
-            </nav>
-          </div>
+        <div class="brand">
+          <div class="mark">CV ampliado</div>
+          <button class="theme-btn" data-theme-toggle>🌓</button>
         </div>
-      </aside>
 
-      <main class="main" id="contenido">
-        <header class="hero" id="top">
-          <p class="eyebrow">Farmacia Hospitalaria · Madrid</p>
-          <h1>Trayectoria profesional y académica</h1>
-          <p class="hero-intro">
-            Página personal con publicaciones, comunicaciones, formación, sesiones y proyectos en formato ampliado, organizada para consulta profesional y académica.
-          </p>
+        <img class="photo" src="./maria.prada.png">
 
-          <div class="hero-meta">
-            <span class="pill">CV ampliado</span>
-            <span class="pill">Actualización dinámica desde Google Sheets</span>
-            <span class="pill">Diseño preparado para foto y PDF</span>
-          </div>
+        <div class="specialty">Farmacia Hospitalaria</div>
 
-          <div class="hero-toolbar">
-            <label for="year-filter">Filtrar por año</label>
-            <select id="year-filter">
-              <option value="">Todos</option>
-            </select>
-            <span class="hero-note">La vista muestra solo las secciones con contenido disponible.</span>
-          </div>
-        </header>
+        <h1 class="name">María Prada Bou</h1>
+        <div class="role">Farmacéutica hospitalaria · investigación clínica</div>
 
-        <section class="section-card" id="publicaciones-section">
-          <div class="section-head">
-            <h2 id="publicaciones">Publicaciones</h2>
-            <div class="section-caption">Artículos y colaboraciones</div>
-          </div>
+        <a class="btn primary" href="mailto:maria.prada.07@gmail.com">Contacto</a>
+        <a class="btn secondary" href="mailto:maria.prada@salud.madrid.org">Correo institucional</a>
 
-          <div id="publicaciones-articulos-block" class="subgroup">
-            <div class="subgroup-title">Artículos científicos</div>
-            <div id="publicaciones-articulos-lista" class="list"></div>
-          </div>
+        <nav class="nav" style="margin-top:14px">
+          <a href="#publicaciones">Publicaciones <span>01</span></a>
+          <a href="#comunicaciones">Comunicaciones <span>02</span></a>
+          <a href="#cursos">Cursos <span>03</span></a>
+          <a href="#sesiones">Sesiones <span>04</span></a>
+          <a href="#proyectos">Proyectos <span>05</span></a>
+        </nav>
 
-          <div id="publicaciones-grupo-block" class="subgroup">
-            <div class="subgroup-title">Colaboraciones en grupo de estudio</div>
-            <div id="publicaciones-grupo-lista" class="list"></div>
-          </div>
-        </section>
+      </div>
+    </aside>
 
-        <section class="section-card" id="comunicaciones-section">
-          <div class="section-head">
-            <h2 id="comunicaciones">Comunicaciones</h2>
-            <div class="section-caption">Nacionales e internacionales</div>
-          </div>
+    <!-- MAIN -->
+    <main>
 
-          <div id="comunicaciones-nacional-block" class="subgroup">
-            <div class="subgroup-title">Nacionales</div>
-            <div id="comunicaciones-nacional-lista" class="list"></div>
-          </div>
+      <header class="hero">
+        <h1>Trayectoria profesional y académica</h1>
+        <p>CV ampliado actualizado dinámicamente desde Google Sheets con producción científica, formación y actividad investigadora en entorno hospitalario.</p>
+      </header>
 
-          <div id="comunicaciones-europea-block" class="subgroup">
-            <div class="subgroup-title">Europeas</div>
-            <div id="comunicaciones-europea-lista" class="list"></div>
-          </div>
+      <section class="section" id="publicaciones">
+        <div class="head"><h2>Publicaciones</h2></div>
+        <div id="publicaciones-lista"></div>
+      </section>
 
-          <div id="comunicaciones-internacional-block" class="subgroup">
-            <div class="subgroup-title">Internacionales</div>
-            <div id="comunicaciones-internacional-lista" class="list"></div>
-          </div>
-        </section>
+      <section class="section" id="comunicaciones">
+        <div class="head"><h2>Comunicaciones</h2></div>
+        <div id="comunicaciones-lista"></div>
+      </section>
 
-        <section class="section-card" id="cursos-section">
-          <div class="section-head">
-            <h2 id="cursos">Cursos y formación</h2>
-            <div class="section-caption">Formación continuada</div>
-          </div>
+      <section class="section" id="cursos">
+        <div class="head"><h2>Cursos</h2></div>
+        <div id="cursos-lista"></div>
+      </section>
 
-          <div id="cursos-lista" class="list">
-            <div class="item"><p class="loading">Cargando cursos...</p></div>
-          </div>
-        </section>
+      <section class="section" id="sesiones">
+        <div class="head"><h2>Sesiones</h2></div>
+        <div id="sesiones-lista"></div>
+      </section>
 
-        <section class="section-card" id="sesiones-section">
-          <div class="section-head">
-            <h2 id="sesiones">Sesiones</h2>
-            <div class="section-caption">Docencia y participación</div>
-          </div>
+      <section class="section" id="proyectos">
+        <div class="head"><h2>Proyectos</h2></div>
+        <div id="proyectos-lista"></div>
+      </section>
 
-          <div id="sesiones-lista" class="list">
-            <div class="item"><p class="loading">Cargando sesiones...</p></div>
-          </div>
-        </section>
+    </main>
 
-        <section class="section-card" id="proyectos-section">
-          <div class="section-head">
-            <h2 id="proyectos">Proyectos</h2>
-            <div class="section-caption">Investigación y colaboración</div>
-          </div>
-
-          <div id="proyectos-lista" class="list">
-            <div class="item"><p class="loading">Cargando proyectos...</p></div>
-          </div>
-        </section>
-
-        <footer>
-          <p>CV ampliado actualizado para consulta profesional.</p>
-        </footer>
-      </main>
-    </div>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv';
-    let allRows = [];
+<script>
+const btn = document.querySelector('[data-theme-toggle]');
+btn.onclick = () => {
+  document.documentElement.dataset.theme =
+    document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+};
+</script>
 
-    function initThemeToggle() {
-      const root = document.documentElement;
-      const button = document.querySelector('[data-theme-toggle]');
-      let currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', currentTheme);
-
-      function renderIcon() {
-        button.setAttribute('aria-label', currentTheme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
-        button.innerHTML = currentTheme === 'dark'
-          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg>'
-          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79z"></path></svg>';
-      }
-
-      renderIcon();
-
-      button.addEventListener('click', () => {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', currentTheme);
-        renderIcon();
-      });
-    }
-
-    function cleanValue(v) {
-      if (v === null || v === undefined) return '';
-      return String(v).trim();
-    }
-
-    function normalize(str) {
-      return cleanValue(str)
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-    }
-
-    function escapeHtml(str) {
-      return cleanValue(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function highlightOwnName(text) {
-      let html = cleanValue(text);
-
-      const patterns = [
-        /Mar[ií]a\s+Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou,\s*Mar[ií]a/gi,
-        /Prada[\s-]?Bou,\s*M\.?/gi,
-        /M\.?\s*Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou\s+M\.?/gi
-      ];
-
-      patterns.forEach((pattern) => {
-        html = html.replace(pattern, match => `<strong class="mine">${match}</strong>`);
-      });
-
-      return html;
-    }
-
-    function isHighlighted(value) {
-      const v = normalize(value);
-      return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
-    }
-
-    function yearValue(value) {
-      const n = parseInt(cleanValue(value), 10);
-      return Number.isNaN(n) ? 0 : n;
-    }
-
-    function mapRow(row) {
-      return {
-        id: cleanValue(row.id),
-        tipo: cleanValue(row.tipo),
-        destacado: cleanValue(row.destacado),
-        año: cleanValue(row.año),
-        titulo: cleanValue(row.titulo),
-        subtipo: cleanValue(row.subtipo),
-        grupo_estudio: cleanValue(row.grupo_estudio),
-        fecha_inicio: cleanValue(row.fecha_inicio),
-        fecha_fin: cleanValue(row.fecha_fin),
-        autores: cleanValue(row.autores),
-        primera_autoria: cleanValue(row.primera_autoria),
-        entidad_evento: cleanValue(row.entidad_evento),
-        lugar: cleanValue(row.lugar),
-        horas: cleanValue(row.horas),
-        ects: cleanValue(row.ects),
-        tipo_presentacion: cleanValue(row.tipo_presentacion),
-        doi: cleanValue(row.doi),
-        texto_cv: cleanValue(row.texto_cv)
-      };
-    }
-
-    function compareItems(a, b) {
-      const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
-      const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
-
-      if (destacadoB !== destacadoA) return destacadoB - destacadoA;
-
-      const yearA = yearValue(a.año);
-      const yearB = yearValue(b.año);
-
-      if (yearB !== yearA) return yearB - yearA;
-
-      return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
-    }
-
-    function formatInlineDoi(doi) {
-      if (!doi) return '';
-      const safe = escapeHtml(doi);
-      return ` DOI: <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
-    }
-
-    function formatEntity(entity) {
-      if (!entity) return '';
-      return `<em class="entity">${escapeHtml(entity)}</em>`;
-    }
-
-    function buildFallbackText(row) {
-      const bits = [];
-
-      if (row.autores) bits.push(escapeHtml(row.autores));
-      if (row.titulo) bits.push(escapeHtml(row.titulo));
-      if (row.entidad_evento) bits.push(formatEntity(row.entidad_evento));
-      if (row.año) bits.push(escapeHtml(row.año));
-
-      let text = bits.join('. ');
-      if (text && !text.endsWith('.')) text += '.';
-      text += formatInlineDoi(row.doi);
-
-      return text;
-    }
-
-    function styleCitationText(row) {
-      let text = row.texto_cv ? escapeHtml(row.texto_cv) : buildFallbackText(row);
-
-      if (row.entidad_evento) {
-        const escapedEntity = escapeHtml(row.entidad_evento).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(escapedEntity, 'g');
-        text = text.replace(regex, formatEntity(row.entidad_evento));
-      }
-
-      if (normalize(row.tipo) === 'curso' && row.titulo) {
-        const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const titleRegex = new RegExp(escapedTitle, 'g');
-        text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
-      }
-
-      if (row.doi) {
-        const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const doiRegex = new RegExp(`DOI:\\s*${doiEscaped}`, 'gi');
-        text = text.replace(doiRegex, formatInlineDoi(row.doi).trim());
-
-        if (!/DOI:/i.test(text) && !text.includes('inline-doi')) {
-          text = text.replace(/\s*$/, '');
-          if (!text.endsWith('.')) text += '.';
-          text += formatInlineDoi(row.doi);
-        }
-      }
-
-      text = highlightOwnName(text);
-      text = text.replace(/\.\./g, '.');
-
-      return text;
-    }
-
-    function renderItem(row) {
-      const texto = styleCitationText(row);
-
-      return `
-        <article class="item">
-          <div class="year-col">${escapeHtml(row.año || '—')}</div>
-          <div class="entry">
-            <p class="citation-text">${texto}</p>
-            <div class="meta">
-              ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function filterByYear(rows) {
-      const selectedYear = cleanValue(document.getElementById('year-filter').value);
-      if (!selectedYear) return rows;
-      return rows.filter(row => cleanValue(row.año) === selectedYear);
-    }
-
-    function populateYearFilter(rows) {
-      const select = document.getElementById('year-filter');
-      const years = [...new Set(
-        rows.map(r => cleanValue(r.año)).filter(Boolean)
-      )].sort((a, b) => Number(b) - Number(a));
-
-      select.innerHTML =
-        '<option value="">Todos</option>' +
-        years.map(year => `<option value="${year}">${year}</option>`).join('');
-    }
-
-    function renderBlock(blockId, listId, items) {
-      const block = document.getElementById(blockId);
-      const list = document.getElementById(listId);
-
-      if (!items.length) {
-        block.classList.add('hidden');
-        list.innerHTML = '';
-        return;
-      }
-
-      block.classList.remove('hidden');
-      list.innerHTML = items.map(renderItem).join('');
-    }
-
-    function renderSimpleSection(sectionId, listId, rows, tipoBuscado) {
-      const section = document.getElementById(sectionId);
-      const items = filterByYear(rows)
-        .map(mapRow)
-        .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
-        .sort(compareItems);
-
-      if (!items.length) {
-        section.classList.add('hidden');
-        document.getElementById(listId).innerHTML = '';
-        return;
-      }
-
-      section.classList.remove('hidden');
-      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
-    }
-
-    function renderPublicaciones(rows) {
-      const section = document.getElementById('publicaciones-section');
-      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'articulo');
-
-      const articulos = filtered
-        .filter(row => normalize(row.subtipo) !== 'colaboracion grupo de estudio')
-        .sort(compareItems);
-
-      const grupo = filtered
-        .filter(row => normalize(row.subtipo) === 'colaboracion grupo de estudio')
-        .sort(compareItems);
-
-      renderBlock('publicaciones-articulos-block', 'publicaciones-articulos-lista', articulos);
-      renderBlock('publicaciones-grupo-block', 'publicaciones-grupo-lista', grupo);
-
-      if (!articulos.length && !grupo.length) {
-        section.classList.add('hidden');
-      } else {
-        section.classList.remove('hidden');
-      }
-    }
-
-    function renderComunicaciones(rows) {
-      const section = document.getElementById('comunicaciones-section');
-      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'comunicacion');
-
-      const nacionales = filtered
-        .filter(row => normalize(row.subtipo) === 'nacional')
-        .sort(compareItems);
-
-      const europeas = filtered
-        .filter(row => normalize(row.subtipo) === 'europea')
-        .sort(compareItems);
-
-      const internacionales = filtered
-        .filter(row => normalize(row.subtipo) === 'internacional')
-        .sort(compareItems);
-
-      renderBlock('comunicaciones-nacional-block', 'comunicaciones-nacional-lista', nacionales);
-      renderBlock('comunicaciones-europea-block', 'comunicaciones-europea-lista', europeas);
-      renderBlock('comunicaciones-internacional-block', 'comunicaciones-internacional-lista', internacionales);
-
-      if (!nacionales.length && !europeas.length && !internacionales.length) {
-        section.classList.add('hidden');
-      } else {
-        section.classList.remove('hidden');
-      }
-    }
-
-    function renderAll() {
-      renderPublicaciones(allRows);
-      renderComunicaciones(allRows);
-      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso');
-      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión');
-      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto');
-    }
-
-    initThemeToggle();
-
-    Papa.parse(csvUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(results) {
-        allRows = results.data;
-        populateYearFilter(allRows);
-        renderAll();
-        document.getElementById('year-filter').addEventListener('change', renderAll);
-      },
-      error: function(error) {
-        console.error(error);
-        [
-          'publicaciones-articulos-lista',
-          'publicaciones-grupo-lista',
-          'comunicaciones-nacional-lista',
-          'comunicaciones-europea-lista',
-          'comunicaciones-internacional-lista',
-          'cursos-lista',
-          'sesiones-lista',
-          'proyectos-lista'
-        ].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
