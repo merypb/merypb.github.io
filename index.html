@@ -3,30 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>María Prada Bou · CV ampliado</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
 :root{
-  --bg:#f7f4ef;
-  --surface:#fff;
-  --text:#1f1c18;
+  --bg:#f6f3ee;
+  --surface:#ffffff;
+  --text:#1e1c18;
   --muted:#6f6a63;
   --line:rgba(0,0,0,.08);
   --accent:#1f6b63;
-  --accent-soft:#e6f2ef;
+  --accent-soft:#e7f3f0;
   --radius:18px;
   --shadow:0 10px 30px rgba(0,0,0,.06);
-  --sidebar:290px;
+  --sidebar:300px;
 }
 
 [data-theme="dark"]{
   --bg:#141210;
   --surface:#1c1916;
-  --text:#eee;
+  --text:#eee6dd;
   --muted:#b3aa9f;
   --line:rgba(255,255,255,.08);
   --accent:#7fc7bd;
@@ -38,6 +38,7 @@ body{
   font-family:Inter;
   background:var(--bg);
   color:var(--text);
+  line-height:1.65;
 }
 
 .shell{
@@ -49,43 +50,53 @@ body{
 .grid{
   display:grid;
   grid-template-columns:var(--sidebar) 1fr;
-  gap:28px;
+  gap:26px;
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr;}
 }
 
 /* SIDEBAR */
-.sidebar{
-  position:sticky;
-  top:18px;
-}
-
 .card{
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:var(--radius);
-  padding:18px;
   box-shadow:var(--shadow);
+  padding:18px;
+  position:sticky;
+  top:18px;
 }
 
-/* 🔥 FIX FOTO RESPONSIVE */
 .photo{
   width:100%;
-  max-width:220px;   /* 👈 clave */
-  height:auto;
-  aspect-ratio:4/5;
-  object-fit:cover;
-  border-radius:18px;
+  max-width:210px;
+  margin:auto;
   display:block;
-  margin:0 auto 12px;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
 }
 
-/* NOMBRE */
 .name{
   font-size:28px;
   font-weight:800;
-  margin:10px 0 4px;
+  margin:12px 0 4px;
 }
 
-/* EMAIL COPIABLE */
+.tag{
+  display:inline-block;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  background:var(--accent-soft);
+  padding:6px 10px;
+  border-radius:999px;
+  margin:8px 0;
+}
+
+/* EMAIL SECTION */
 .email{
   font-size:13px;
   color:var(--muted);
@@ -94,13 +105,33 @@ body{
   margin:4px 0;
 }
 
+/* BUTTONS EMAIL */
+.btn{
+  display:block;
+  padding:10px 12px;
+  border-radius:12px;
+  text-align:center;
+  text-decoration:none;
+  font-weight:600;
+  margin-top:6px;
+}
+
+.primary{
+  background:var(--accent);
+  color:white;
+}
+
+.secondary{
+  border:1px solid var(--line);
+}
+
 /* NAV */
 .nav a{
   display:flex;
   justify-content:space-between;
   padding:10px;
-  text-decoration:none;
   border-radius:10px;
+  text-decoration:none;
   font-weight:600;
 }
 .nav a:hover{
@@ -137,7 +168,7 @@ body{
   margin:0 0 10px;
 }
 
-/* ITEMS */
+/* ITEM */
 .item{
   display:grid;
   grid-template-columns:70px 1fr;
@@ -151,19 +182,11 @@ body{
   color:var(--muted);
 }
 
-/* MOBILE FIX */
-@media (max-width: 900px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .sidebar{
-    position:relative;
-  }
-
-  .photo{
-    max-width:160px; /* 🔥 CLAVE: no gigante en móvil */
-  }
+/* DEBUG */
+#debug{
+  font-size:12px;
+  color:red;
+  margin-top:10px;
 }
 </style>
 </head>
@@ -174,24 +197,24 @@ body{
 <div class="grid">
 
 <!-- SIDEBAR -->
-<aside class="sidebar">
-<div class="card">
+<aside class="card">
 
 <img class="photo" src="./maria.prada.png">
 
 <div class="name">María Prada Bou</div>
 
-<div style="font-size:12px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase">
-Farmacia Hospitalaria
-</div>
+<div class="tag">Farmacia Hospitalaria</div>
 
-<!-- EMAILS COPIABLES -->
+<!-- EMAILS (COPIABLE + BOTONES) -->
 <div style="margin-top:10px">
 <span class="email">maria.prada.07@gmail.com</span>
 <span class="email">maria.prada@salud.madrid.org</span>
 </div>
 
-<nav class="nav">
+<a class="btn primary" href="mailto:maria.prada.07@gmail.com">Enviar correo personal</a>
+<a class="btn secondary" href="mailto:maria.prada@salud.madrid.org">Enviar correo institucional</a>
+
+<nav class="nav" style="margin-top:12px">
 <a href="#pub">Publicaciones</a>
 <a href="#com">Comunicaciones</a>
 <a href="#cur">Cursos</a>
@@ -199,7 +222,6 @@ Farmacia Hospitalaria
 <a href="#pro">Proyectos</a>
 </nav>
 
-</div>
 </aside>
 
 <!-- MAIN -->
@@ -208,31 +230,33 @@ Farmacia Hospitalaria
 <div class="hero">
 <h1>Trayectoria profesional y académica</h1>
 <p>CV ampliado conectado dinámicamente a Google Sheets.</p>
+
+<div id="debug"></div>
 </div>
 
 <section class="section" id="pub">
 <h2>Publicaciones</h2>
-<div id="publicaciones-lista"></div>
+<div id="publicaciones"></div>
 </section>
 
 <section class="section" id="com">
 <h2>Comunicaciones</h2>
-<div id="comunicaciones-lista"></div>
+<div id="comunicaciones"></div>
 </section>
 
 <section class="section" id="cur">
 <h2>Cursos</h2>
-<div id="cursos-lista"></div>
+<div id="cursos"></div>
 </section>
 
 <section class="section" id="ses">
 <h2>Sesiones</h2>
-<div id="sesiones-lista"></div>
+<div id="sesiones"></div>
 </section>
 
 <section class="section" id="pro">
 <h2>Proyectos</h2>
-<div id="proyectos-lista"></div>
+<div id="proyectos"></div>
 </section>
 
 </main>
@@ -241,38 +265,53 @@ Farmacia Hospitalaria
 </div>
 
 <script>
+
 const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv";
 
-function renderItem(r){
-  return `
-  <div class="item">
-    <div class="year">${r.año || ""}</div>
-    <div>${r.titulo || ""}</div>
-  </div>`;
+function render(rows, tipo){
+  return rows
+    .filter(r => (r.tipo || "").toLowerCase() === tipo)
+    .map(r => `
+      <div class="item">
+        <div class="year">${r.año || ""}</div>
+        <div>${r.titulo || ""}</div>
+      </div>
+    `).join("");
 }
 
 Papa.parse(csvUrl,{
   download:true,
   header:true,
   complete:(res)=>{
-    const rows=res.data;
 
-    document.getElementById("publicaciones-lista").innerHTML =
-      rows.filter(r=>r.tipo==="articulo").map(renderItem).join("");
+    const rows = res.data;
 
-    document.getElementById("comunicaciones-lista").innerHTML =
-      rows.filter(r=>r.tipo==="comunicacion").map(renderItem).join("");
+    document.getElementById("publicaciones").innerHTML =
+      render(rows,"articulo");
 
-    document.getElementById("cursos-lista").innerHTML =
-      rows.filter(r=>r.tipo==="curso").map(renderItem).join("");
+    document.getElementById("comunicaciones").innerHTML =
+      render(rows,"comunicacion");
 
-    document.getElementById("sesiones-lista").innerHTML =
-      rows.filter(r=>r.tipo==="sesion").map(renderItem).join("");
+    document.getElementById("cursos").innerHTML =
+      render(rows,"curso");
 
-    document.getElementById("proyectos-lista").innerHTML =
-      rows.filter(r=>r.tipo==="proyecto").map(renderItem).join("");
+    document.getElementById("sesiones").innerHTML =
+      render(rows,"sesion");
+
+    document.getElementById("proyectos").innerHTML =
+      render(rows,"proyecto");
+
+    document.getElementById("debug").innerHTML =
+      "✔ Datos cargados correctamente desde Google Sheets";
+
+  },
+  error:(err)=>{
+    document.getElementById("debug").innerHTML =
+      "❌ ERROR cargando Google Sheets. Revisa publicación en web.";
+    console.error(err);
   }
 });
+
 </script>
 
 </body>
