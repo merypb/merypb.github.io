@@ -14,7 +14,7 @@
       --bg:#f5f1eb;
       --surface:#fbf8f3;
       --surface-2:#f3ede5;
-      --surface-3:#e6ddd2;
+      --surface-3:#e9e0d5;
       --text:#1d1a17;
       --muted:#6e685f;
       --faint:#9c948a;
@@ -23,11 +23,10 @@
       --accent:#3e6964;
       --accent-soft:#e3ece9;
       --accent-ink:#2a4b47;
-      --shadow-sm:0 1px 2px rgba(31, 25, 21, .04);
-      --shadow-md:0 10px 30px rgba(31, 25, 21, .06);
+      --shadow-sm:0 1px 2px rgba(31,25,21,.04);
       --radius-sm:10px;
       --radius-md:18px;
-      --radius-lg:30px;
+      --radius-lg:28px;
       --content:1280px;
       --sidebar:320px;
     }
@@ -46,16 +45,16 @@
       --accent-soft:#233734;
       --accent-ink:#d7e6e2;
       --shadow-sm:0 1px 2px rgba(0,0,0,.22);
-      --shadow-md:0 14px 34px rgba(0,0,0,.28);
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       background:var(--bg);
       color:var(--text);
-      font-family:'Satoshi', 'Inter', Arial, sans-serif;
+      font-family:'Satoshi','Inter',Arial,sans-serif;
       line-height:1.68;
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
@@ -66,9 +65,9 @@
     }
 
     img{
+      display:block;
       max-width:100%;
       height:auto;
-      display:block;
     }
 
     .skip-link{
@@ -95,40 +94,22 @@
 
     .site-grid{
       display:grid;
-      grid-template-columns:var(--sidebar) minmax(0, 1fr);
+      grid-template-columns:var(--sidebar) minmax(0,1fr);
       gap:34px;
       align-items:start;
     }
 
     .sidebar{
-      position:sticky;
-      top:18px;
+      position:relative;
       align-self:start;
-      z-index: 10;
     }
-    
+
     .sidebar-card{
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:32px;
       padding:24px;
       box-shadow:var(--shadow-sm);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .sidebar-card::after{
-      content:"";
-      position:absolute;
-      inset:auto -38px -38px auto;
-      width:120px;
-      height:120px;
-      border-radius:999px;
-      border:1px solid color-mix(in srgb, var(--accent) 14%, transparent);
-      opacity:.55;
-      pointer-events:none;
     }
 
     .brand{
@@ -136,7 +117,7 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-bottom:22px;
+      margin-bottom:24px;
     }
 
     .brand-mark{
@@ -185,44 +166,21 @@
     }
 
     .profile-card{
-      padding-top:4px;
+      padding-top:2px;
     }
 
-    /* --- NUEVO ESTILO DE FOTO --- */
-    .portrait-wrap{
-      width:100%;
-      max-width:214px; /* Ajuste sutil de ancho */
-      margin:0 auto 22px;
-      padding:12px; /* La matización limpia alrededor */
-      border-radius:32px;
-      position:relative;
-      /* Degradado sutil para la matización en lugar de color plano */
-      background:
-        linear-gradient(180deg,
-          color-mix(in srgb, var(--accent-soft) 82%, white 18%),
-          transparent
-        );
-    }
-
-    /* Borde único y limpio */
-    .portrait-wrap::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:32px;
-      border:1px solid color-mix(in srgb, var(--accent) 12%, transparent);
-      pointer-events:none;
+    .portrait-block{
+      max-width:206px;
+      margin:0 auto 24px;
     }
 
     .profile-photo-real{
       width:100%;
-      /* Usar formato retrato 3:4 profesional */
-      aspect-ratio:3/4;
-      object-fit:cover;
-      border-radius:24px; /* Esquinas muy redondeadas para la foto */
-      border:1px solid var(--line-strong);
-      box-shadow:0 18px 40px rgba(0,0,0,.08); /* Sombra exterior suave y profesional */
-      background:var(--surface);
+      height:auto;
+      border-radius:20px;
+      background:transparent;
+      border:none;
+      box-shadow:none;
     }
 
     .profile-name{
@@ -340,36 +298,19 @@
       text-decoration:none;
       font-size:14px;
       font-weight:700;
-      border-radius:14px;
-      padding:12px 14px;
-      position:relative;
-      overflow:hidden;
+      border-radius:12px;
+      padding:11px 12px;
     }
 
-    /* Fondo activo/hover sutil para la navegación lateral */
-    .sidebar-nav a::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--accent-soft) 70%, transparent),
-        transparent
-      );
-      opacity:0;
-      transition:opacity .2s ease;
+    .sidebar-nav a span:last-child{
+      color:var(--faint);
+      font-size:12px;
+      font-weight:700;
     }
 
-    .sidebar-nav a:hover::before,
-    .sidebar-nav a.active::before {
-      opacity:1;
-    }
-
-    .sidebar-nav a:hover,
-    .sidebar-nav a.active {
+    .sidebar-nav a:hover{
       background:var(--surface-2);
       color:var(--accent);
-      transform:translateX(3px);
     }
 
     .main{
@@ -383,34 +324,6 @@
       padding:42px 40px 30px;
       box-shadow:var(--shadow-sm);
       margin-bottom:24px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      width:180px;
-      height:180px;
-      right:-46px;
-      top:-46px;
-      border-radius:999px;
-      background:radial-gradient(circle, color-mix(in srgb, var(--accent-soft) 90%, white 10%) 0%, transparent 72%);
-      pointer-events:none;
-      opacity:.95;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      width:88px;
-      height:88px;
-      right:34px;
-      top:34px;
-      border-radius:999px;
-      border:1px solid color-mix(in srgb, var(--accent) 18%, transparent);
-      opacity:.55;
-      pointer-events:none;
     }
 
     .eyebrow{
@@ -479,7 +392,6 @@
       padding:30px 30px 8px;
       box-shadow:var(--shadow-sm);
       margin-bottom:22px;
-      scroll-margin-top: 24px; /* Ajuste para Scroll Spy */
     }
 
     .section-head{
@@ -528,12 +440,6 @@
       flex-direction:column;
     }
 
-    /* Animación de entrada para los items */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .item{
       display:grid;
       grid-template-columns:80px minmax(0,1fr);
@@ -541,7 +447,6 @@
       padding:18px 0;
       border-top:1px solid var(--line);
       align-items:start;
-      animation: fadeIn 0.4s ease-out forwards;
     }
 
     .year-col{
@@ -613,16 +518,11 @@
     }
 
     .empty,
-    .loading,
-    .error-msg{
+    .loading{
       margin:0;
       color:var(--muted);
       font-style:italic;
       padding:8px 0 20px;
-    }
-
-    .error-msg {
-      color: #b03a2e; /* Soft red for errors */
     }
 
     .hidden{
@@ -635,27 +535,22 @@
       font-size:13px;
     }
 
-    @media (max-width: 1080px){
+    @media (max-width:1080px){
       .site-grid{
         grid-template-columns:1fr;
       }
 
-      .sidebar{
-        position:relative;
-        top:auto;
-      }
-
       .sidebar-nav{
         display:grid;
-        grid-template-columns:repeat(2, minmax(0,1fr));
+        grid-template-columns:repeat(2,minmax(0,1fr));
       }
 
-      .portrait-wrap{
-        max-width:140px;
+      .portrait-block{
+        max-width:190px;
       }
     }
 
-    @media (max-width: 760px){
+    @media (max-width:760px){
       .site-shell{
         padding:18px 14px 54px;
       }
@@ -675,7 +570,7 @@
       }
 
       .hero h1{
-        font-size:clamp(2rem, 8vw, 3rem);
+        font-size:clamp(2rem,8vw,3rem);
         max-width:none;
       }
 
@@ -715,10 +610,9 @@
         width:100%;
       }
 
-      .portrait-wrap{
-        max-width:125px;
-        padding:6px;
-        margin:0 auto 16px;
+      .portrait-block{
+        max-width:176px;
+        margin:0 auto 18px;
       }
 
       .profile-name{
@@ -730,7 +624,7 @@
       }
     }
 
-    @media (max-width: 480px){
+    @media (max-width:480px){
       .site-shell{
         padding:14px 10px 40px;
       }
@@ -765,8 +659,8 @@
         line-height:1.74;
       }
 
-      .portrait-wrap{
-        max-width:160px;
+      .portrait-block{
+        max-width:164px;
       }
 
       .button{
@@ -778,7 +672,6 @@
       *{
         scroll-behavior:auto !important;
         transition:none !important;
-        animation:none !important;
       }
     }
   </style>
@@ -806,7 +699,7 @@
           </div>
 
           <div class="profile-card">
-            <div class="portrait-wrap">
+            <div class="portrait-block">
               <img
                 class="profile-photo-real"
                 src="./maria.prada.png"
@@ -971,29 +864,6 @@
       });
     }
 
-    // Scroll Spy functionality for the sidebar
-    function initScrollSpy() {
-      const sections = document.querySelectorAll('.section-card');
-      const navLinks = document.querySelectorAll('.sidebar-nav a');
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              // Extract h2 id within the intersecting section
-              const sectionId = entry.target.querySelector('h2').id;
-              if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-              }
-            });
-          }
-        });
-      }, { rootMargin: '-20% 0px -70% 0px' });
-
-      sections.forEach(section => observer.observe(section));
-    }
-
     function cleanValue(v) {
       if (v === null || v === undefined) return '';
       return String(v).trim();
@@ -1139,13 +1009,11 @@
       return text;
     }
 
-    function renderItem(row, index) {
+    function renderItem(row) {
       const texto = styleCitationText(row);
-      // Retrasar la animación un poco para cada elemento para un efecto visual premium
-      const delay = index * 0.03; 
 
       return `
-        <article class="item" style="animation-delay: ${delay}s">
+        <article class="item">
           <div class="year-col">${escapeHtml(row.año || '—')}</div>
           <div class="entry">
             <p class="citation-text">${texto}</p>
@@ -1185,7 +1053,7 @@
       }
 
       block.classList.remove('hidden');
-      list.innerHTML = items.map((item, i) => renderItem(item, i)).join('');
+      list.innerHTML = items.map(renderItem).join('');
     }
 
     function renderSimpleSection(sectionId, listId, rows, tipoBuscado) {
@@ -1202,7 +1070,7 @@
       }
 
       section.classList.remove('hidden');
-      document.getElementById(listId).innerHTML = items.map((item, i) => renderItem(item, i)).join('');
+      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
     }
 
     function renderPublicaciones(rows) {
@@ -1257,50 +1125,41 @@
     function renderAll() {
       renderPublicaciones(allRows);
       renderComunicaciones(allRows);
-      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'curso');
-      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'sesion');
-      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'proyecto');
+      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso');
+      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión');
+      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto');
     }
 
-    // Inicialización una vez cargado el DOM
-    document.addEventListener('DOMContentLoaded', () => {
-      initThemeToggle();
-      initScrollSpy();
+    initThemeToggle();
 
-      // Escuchar cambios en el filtro
-      const yearFilter = document.getElementById('year-filter');
-      yearFilter.addEventListener('change', renderAll);
-
-      // Cargar CSV
-      Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          allRows = results.data;
-          populateYearFilter(allRows);
-          renderAll();
-        },
-        error: function(err) {
-          console.error('Error al procesar el CSV:', err);
-          const ids = [
-            'publicaciones-articulos-lista',
-            'publicaciones-grupo-lista',
-            'comunicaciones-nacional-lista',
-            'comunicaciones-europea-lista',
-            'comunicaciones-internacional-lista',
-            'cursos-lista',
-            'sesiones-lista',
-            'proyectos-lista'
-          ];
-          ids.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-              el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="error-msg">No se han podido cargar los datos automáticamente. Por favor, revisa tu conexión o el enlace del Google Sheet.</p></div></article>';
-            }
-          });
-        }
-      });
+    Papa.parse(csvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        allRows = results.data;
+        populateYearFilter(allRows);
+        renderAll();
+        document.getElementById('year-filter').addEventListener('change', renderAll);
+      },
+      error: function(error) {
+        console.error(error);
+        [
+          'publicaciones-articulos-lista',
+          'publicaciones-grupo-lista',
+          'comunicaciones-nacional-lista',
+          'comunicaciones-europea-lista',
+          'comunicaciones-internacional-lista',
+          'cursos-lista',
+          'sesiones-lista',
+          'proyectos-lista'
+        ].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
+          }
+        });
+      }
     });
   </script>
 </body>
