@@ -96,11 +96,13 @@
       align-items:start;
     }
 
-    .sidebar{
-      position:sticky;
-      top:20px;
-      align-self:start;
-    }
+      .sidebar{
+        position: sticky;
+        top: 32px;
+        align-self: start;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+      }
 
     .sidebar-card{
       background:var(--surface);
@@ -594,10 +596,12 @@
         grid-template-columns:1fr;
       }
 
-      .sidebar{
-        position:relative;
-        top:auto;
-      }
+        .sidebar{
+          position: relative;
+          top: auto;
+          max-height: none;
+          overflow-y: visible;
+        }
 
       .sidebar-nav{
         display:grid;
@@ -701,7 +705,13 @@
             <p class="profile-role">Farmacéutica hospitalaria con perfil académico, clínico y docente.</p>
 
             <div class="cta-stack">
-              <a class="button primary" href="./CV-maria-prada-bou.pdf" target="_blank" rel="noopener noreferrer">
+              <a
+                class="button primary"
+                href="./CV-maria-prada-bou.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                type="application/pdf"
+              >
                 Ver CV en PDF
               </a>
 
