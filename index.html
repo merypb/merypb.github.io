@@ -181,33 +181,29 @@
     }
 
     .portrait-wrap{
-      max-width:170px;
-      margin:0 auto 20px;
-      position:relative;
-    }
+  width:100%;
+  margin:0 0 20px;
+  border-radius:24px;
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  background:var(--surface-2);
+}
 
-    .portrait-wrap::before{
-      content:"";
-      position:absolute;
-      inset:-10px;
-      border-radius:26px;
-      background:linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 85%, white 15%), transparent);
-      z-index:0;
-      opacity:.7;
-    }
+.portrait-wrap::before{
+  content:none;
+}
 
-    .profile-photo-real{
-      position:relative;
-      z-index:1;
-      width:100%;
-      aspect-ratio:4/5;
-      object-fit:cover;
-      object-position:center 14%;
-      border-radius:22px;
-      border:1px solid var(--line-strong);
-      box-shadow:var(--shadow-md);
-      background:var(--surface-2);
-    }
+.profile-photo-real{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:0;
+  border:0;
+  box-shadow:none;
+  object-fit:contain;
+  object-position:center top;
+  background:var(--surface-2);
+}
 
     .profile-name{
       font-size:30px;
@@ -688,15 +684,13 @@
 
           <div class="profile-card">
             <div class="portrait-wrap">
-              <img
-                class="profile-photo-real"
-                src="./maria.prada.png"
-                alt="Fotografía profesional de María Prada Bou"
-                width="420"
-                height="520"
-                loading="eager"
-              >
-            </div>
+                <img
+                  class="profile-photo-real"
+                  src="./maria.prada.png"
+                  alt="Fotografía profesional de María Prada Bou"
+                  loading="eager"
+                >
+              </div>
 
             <h2 class="profile-name">María Prada Bou</h2>
             <p class="profile-role">Farmacéutica hospitalaria con perfil académico, clínico y docente.</p>
