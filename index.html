@@ -981,7 +981,21 @@
         const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const titleRegex = new RegExp(escapedTitle, 'g');
         text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
+          }
+          if (normalize(row.tipo) === 'comunicacion' && row.entidad_evento) {
+      const entity = escapeHtml(row.entidad_evento);
+      const place = escapeHtml(row.lugar);
+    
+      if (entity && place) {
+        const combined = `${entity}, ${place}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const combinedRegex = new RegExp(combined, 'g');
+        text = text.replace(combinedRegex, `<em class="entity">${entity}, ${place}</em>`);
+      } else if (entity) {
+        const entityOnly = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const entityRegex = new RegExp(entityOnly, 'g');
+        text = text.replace(entityRegex, `<em class="entity">${entity}</em>`);
       }
+    }
 
       if (row.doi) {
         const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1004,9 +1018,9 @@
     function formatCommunicationHeading(row) {
       const entity = cleanValue(row.entidad_evento);
       const place = cleanValue(row.lugar);
-
-      if (entity && place) return `${formatEntity(entity)} - ${escapeHtml(place)}`;
-      if (entity) return formatEntity(entity);
+    
+      if (entity && place) return `${escapeHtml(entity)} - ${escapeHtml(place)}`;
+      if (entity) return escapeHtml(entity);
       if (place) return escapeHtml(place);
       return '';
     }
