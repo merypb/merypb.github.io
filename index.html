@@ -491,6 +491,10 @@
       line-height:1.5;
     }
 
+    .communication-heading em{
+      font-style:italic;
+    }
+
     .citation-text{
       margin:0;
       max-width:76ch;
@@ -1000,9 +1004,10 @@
     function formatCommunicationHeading(row) {
       const entity = cleanValue(row.entidad_evento);
       const place = cleanValue(row.lugar);
-      if (entity && place) return `${entity} - ${place}`;
-      if (entity) return entity;
-      if (place) return place;
+
+      if (entity && place) return `${formatEntity(entity)} - ${escapeHtml(place)}`;
+      if (entity) return formatEntity(entity);
+      if (place) return escapeHtml(place);
       return '';
     }
 
@@ -1014,11 +1019,10 @@
         <article class="item">
           <div class="year-col">${escapeHtml(row.año || '—')}</div>
           <div class="entry">
-            ${heading ? `<p class="communication-heading">${escapeHtml(heading)}</p>` : ''}
+            ${heading ? `<p class="communication-heading">${heading}</p>` : ''}
             <p class="citation-text">${texto}</p>
             <div class="meta">
               ${isTruthy(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
-              ${isTruthy(row.primera_autoria) && (normalize(row.tipo) === 'articulo' || normalize(row.tipo) === 'comunicacion') ? '<span class="badge">Primera autoría</span>' : ''}
             </div>
           </div>
         </article>
