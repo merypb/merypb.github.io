@@ -22,11 +22,9 @@
       --line-strong:#cbc1b4;
       --accent:#3e6964;
       --accent-soft:#e3ece9;
-      --accent-soft-2:#edf3f1;
       --accent-ink:#2a4b47;
       --shadow-sm:0 1px 2px rgba(31, 25, 21, .04);
       --shadow-md:0 10px 30px rgba(31, 25, 21, .06);
-      --shadow-lg:0 18px 40px rgba(31, 25, 21, .08);
       --radius-sm:10px;
       --radius-md:18px;
       --radius-lg:30px;
@@ -46,19 +44,13 @@
       --line-strong:#474038;
       --accent:#7fb0aa;
       --accent-soft:#233734;
-      --accent-soft-2:#1d2f2c;
       --accent-ink:#d7e6e2;
       --shadow-sm:0 1px 2px rgba(0,0,0,.22);
       --shadow-md:0 14px 34px rgba(0,0,0,.28);
-      --shadow-lg:0 20px 48px rgba(0,0,0,.34);
     }
 
     *{box-sizing:border-box}
-    html{
-      scroll-behavior:smooth;
-      scroll-padding-top:24px;
-    }
-
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       background:var(--bg);
@@ -70,13 +62,7 @@
     }
 
     a, button, select{
-      transition:
-        background .18s ease,
-        color .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease,
-        transform .18s ease,
-        opacity .18s ease;
+      transition:background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
     }
 
     img{max-width:100%; display:block}
@@ -116,8 +102,6 @@
       align-self:start;
       max-height:calc(100vh - 40px);
       overflow-y:auto;
-      scrollbar-width:thin;
-      scrollbar-color:var(--line-strong) transparent;
     }
 
     .sidebar-card{
@@ -193,14 +177,13 @@
     .portrait-wrap{
       width:100%;
       max-width:260px;
-      margin:0 auto 22px;
+      margin:0 auto 20px;
       border-radius:24px;
       overflow:hidden;
       border:1px solid var(--line-strong);
-      background:linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+      background:var(--surface-2);
       display:flex;
       justify-content:center;
-      box-shadow:var(--shadow-sm);
     }
 
     .portrait-wrap::before{
@@ -222,9 +205,9 @@
     }
 
     .profile-name{
-      font-size:32px;
-      line-height:1.02;
-      letter-spacing:-.04em;
+      font-size:30px;
+      line-height:1.05;
+      letter-spacing:-.035em;
       font-weight:900;
       margin:0 0 10px;
       text-align:center;
@@ -232,22 +215,21 @@
 
     .profile-role{
       color:var(--muted);
-      font-size:15px;
-      line-height:1.65;
-      margin:0 auto 22px;
+      font-size:14.5px;
+      margin:0 auto 20px;
       text-align:center;
-      max-width:28ch;
+      max-width:26ch;
     }
 
     .cta-stack{
       display:flex;
       flex-direction:column;
       gap:10px;
-      margin-bottom:18px;
+      margin-bottom:16px;
     }
 
     .button{
-      min-height:48px;
+      min-height:46px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -258,22 +240,12 @@
       font-size:14px;
       font-weight:700;
       border:1px solid transparent;
-      box-shadow:0 0 0 rgba(0,0,0,0);
-    }
-
-    .button:focus-visible,
-    .theme-toggle:focus-visible,
-    .sidebar-nav a:focus-visible,
-    .hero-toolbar select:focus-visible{
-      outline:2px solid color-mix(in srgb, var(--accent) 68%, white 32%);
-      outline-offset:3px;
     }
 
     .button.primary{
       background:var(--accent);
       color:#fff;
       border-color:var(--accent);
-      box-shadow:0 10px 22px color-mix(in srgb, var(--accent) 18%, transparent);
     }
 
     .button.primary:hover{
@@ -325,7 +297,7 @@
       display:flex;
       flex-direction:column;
       gap:4px;
-      padding-top:10px;
+      padding-top:8px;
       border-top:1px solid var(--line);
     }
 
@@ -340,7 +312,6 @@
       font-weight:700;
       border-radius:12px;
       padding:11px 12px;
-      border:1px solid transparent;
     }
 
     .sidebar-nav a span:last-child{
@@ -354,17 +325,6 @@
       color:var(--accent);
     }
 
-    .sidebar-nav a.is-active{
-      background:var(--accent-soft);
-      color:var(--accent-ink);
-      border-color:color-mix(in srgb, var(--accent) 14%, var(--line));
-      box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 6%, transparent);
-    }
-
-    .sidebar-nav a.is-active span:last-child{
-      color:var(--accent);
-    }
-
     .main{
       min-width:0;
     }
@@ -373,14 +333,17 @@
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:40px;
-      padding:48px 42px 34px;
+      padding:42px 40px 30px;
       box-shadow:var(--shadow-sm);
       margin-bottom:24px;
       position:relative;
       overflow:hidden;
     }
 
-    .hero::before,
+    .hero::before{
+      content:none;
+    }
+
     .hero::after{
       content:none;
     }
@@ -395,20 +358,20 @@
     }
 
     .hero h1{
-      margin:0 0 14px;
-      font-size:clamp(2.4rem, 3.7vw, 4.1rem);
-      line-height:.98;
-      letter-spacing:-.055em;
+      margin:0 0 12px;
+      font-size:clamp(2.2rem, 3.5vw, 4rem);
+      line-height:1;
+      letter-spacing:-.05em;
       font-weight:900;
-      max-width:13ch;
+      max-width:14ch;
     }
 
     .hero-intro{
-      margin:0;
+      margin:0 0 0;
       color:var(--muted);
       font-size:17px;
-      line-height:1.82;
-      max-width:64ch;
+      line-height:1.78;
+      max-width:62ch;
     }
 
     .hero-toolbar{
@@ -417,7 +380,7 @@
       align-items:center;
       gap:14px;
       padding-top:22px;
-      margin-top:24px;
+      margin-top:22px;
       border-top:1px solid var(--line);
     }
 
@@ -429,18 +392,13 @@
 
     .hero-toolbar select{
       appearance:none;
-      min-width:152px;
+      min-width:136px;
       border:1px solid var(--line-strong);
       background:var(--surface);
       color:var(--text);
       border-radius:12px;
       padding:11px 14px;
       font:inherit;
-      box-shadow:var(--shadow-sm);
-    }
-
-    .hero-toolbar select:hover{
-      border-color:color-mix(in srgb, var(--accent) 22%, var(--line-strong));
     }
 
     .hero-note{
@@ -452,11 +410,9 @@
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:32px;
-      padding:32px 30px 10px;
+      padding:30px 30px 8px;
       box-shadow:var(--shadow-sm);
       margin-bottom:22px;
-      content-visibility:auto;
-      contain-intrinsic-size:700px;
     }
 
     .section-head{
@@ -464,16 +420,16 @@
       align-items:end;
       justify-content:space-between;
       gap:20px;
-      padding-bottom:16px;
+      padding-bottom:14px;
       border-bottom:1px solid var(--line);
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     .section-head h2{
       margin:0;
-      font-size:31px;
-      line-height:1.03;
-      letter-spacing:-.035em;
+      font-size:30px;
+      line-height:1.05;
+      letter-spacing:-.03em;
       font-weight:900;
     }
 
@@ -487,12 +443,12 @@
     }
 
     .subgroup{
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
 
     .subgroup-title{
       margin:18px 0 0;
-      padding:18px 0 12px;
+      padding:16px 0 10px;
       color:var(--accent);
       font-size:12px;
       font-weight:800;
@@ -507,15 +463,15 @@
 
     .item{
       display:grid;
-      grid-template-columns:84px minmax(0,1fr);
+      grid-template-columns:80px minmax(0,1fr);
       gap:18px;
-      padding:20px 0;
+      padding:18px 0;
       border-top:1px solid var(--line);
       align-items:start;
     }
 
     .year-col{
-      padding-top:3px;
+      padding-top:2px;
       color:var(--faint);
       font-size:12px;
       font-weight:800;
@@ -539,10 +495,10 @@
 
     .citation-text{
       margin:0;
-      max-width:78ch;
+      max-width:76ch;
       color:var(--text);
       font-size:15.5px;
-      line-height:1.86;
+      line-height:1.82;
     }
 
     .citation-text em.entity{
@@ -574,7 +530,7 @@
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin-top:12px;
+      margin-top:10px;
     }
 
     .badge{
@@ -591,39 +547,12 @@
       text-transform:uppercase;
     }
 
-    .empty{
+    .empty,
+    .loading{
       margin:0;
       color:var(--muted);
       font-style:italic;
       padding:8px 0 20px;
-    }
-
-    .loading{
-      margin:0;
-      color:var(--muted);
-      font-style:normal;
-      padding:0;
-      position:relative;
-      min-height:18px;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .loading::before{
-      content:"";
-      width:16px;
-      height:16px;
-      border-radius:999px;
-      background:linear-gradient(90deg, var(--surface-3) 0%, var(--accent-soft) 50%, var(--surface-3) 100%);
-      background-size:200% 100%;
-      animation:shimmer 1.2s linear infinite;
-      flex:none;
-    }
-
-    @keyframes shimmer{
-      0%{background-position:200% 0}
-      100%{background-position:-200% 0}
     }
 
     .hidden{
@@ -656,10 +585,6 @@
       .portrait-wrap{
         max-width:150px;
       }
-
-      .hero h1{
-        max-width:none;
-      }
     }
 
     @media (max-width: 760px){
@@ -673,12 +598,8 @@
         border-radius:24px;
       }
 
-      .sidebar-card{
-        padding:20px;
-      }
-
       .hero{
-        padding:30px 22px 24px;
+        padding:28px 22px 24px;
       }
 
       .hero h1{
@@ -686,25 +607,18 @@
         max-width:none;
       }
 
-      .hero-intro{
-        font-size:16px;
-        line-height:1.76;
-      }
-
       .section-card{
-        padding:24px 20px 8px;
+        padding:22px 20px 6px;
       }
 
       .section-head{
         flex-direction:column;
         align-items:flex-start;
-        gap:8px;
       }
 
       .item{
         grid-template-columns:1fr;
         gap:8px;
-        padding:18px 0;
       }
 
       .year-col{
@@ -719,17 +633,12 @@
         flex-direction:column;
         align-items:flex-start;
       }
-
-      .button{
-        width:100%;
-      }
     }
 
     @media (prefers-reduced-motion: reduce){
       *{
         scroll-behavior:auto !important;
         transition:none !important;
-        animation:none !important;
       }
     }
   </style>
@@ -868,7 +777,7 @@
           </div>
 
           <div id="cursos-lista" class="list">
-            <div class="item"><p class="loading" aria-live="polite">Cargando cursos...</p></div>
+            <div class="item"><p class="loading">Cargando cursos...</p></div>
           </div>
         </section>
 
@@ -879,7 +788,7 @@
           </div>
 
           <div id="sesiones-lista" class="list">
-            <div class="item"><p class="loading" aria-live="polite">Cargando sesiones...</p></div>
+            <div class="item"><p class="loading">Cargando sesiones...</p></div>
           </div>
         </section>
 
@@ -890,75 +799,358 @@
           </div>
 
           <div id="proyectos-lista" class="list">
-            <div class="item"><p class="loading" aria-live="polite">Cargando proyectos...</p></div>
+            <div class="item"><p class="loading">Cargando proyectos...</p></div>
           </div>
         </section>
 
         <footer>
-          Perfil académico y profesional de consulta ampliada.
+          <p>CV ampliado actualizado para consulta profesional.</p>
         </footer>
       </main>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    (function () {
-      const root = document.documentElement;
-      const toggle = document.querySelector('[data-theme-toggle]');
-      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', theme);
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv';
+    let allRows = [];
 
-      const setThemeIcon = () => {
-        toggle.innerHTML = theme === 'dark'
+    function initThemeToggle() {
+      const root = document.documentElement;
+      const button = document.querySelector('[data-theme-toggle]');
+      let currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', currentTheme);
+
+      function renderIcon() {
+        button.setAttribute('aria-label', currentTheme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+        button.innerHTML = currentTheme === 'dark'
           ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg>'
           : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79z"></path></svg>';
-        toggle.setAttribute('aria-label', theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
-      };
+      }
 
-      setThemeIcon();
+      renderIcon();
 
-      toggle.addEventListener('click', () => {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', theme);
-        setThemeIcon();
+      button.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', currentTheme);
+        renderIcon();
       });
-    })();
+    }
 
-    (function () {
-      const navLinks = Array.from(document.querySelectorAll('.sidebar-nav a'));
-      const targets = navLinks
-        .map(link => document.querySelector(link.getAttribute('href')))
-        .filter(Boolean);
+    function cleanValue(v) {
+      if (v === null || v === undefined) return '';
+      return String(v).trim();
+    }
 
-      if (!targets.length) return;
+    function normalize(str) {
+      return cleanValue(str)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
 
-      const linkMap = new Map(
-        navLinks.map(link => [link.getAttribute('href').slice(1), link])
-      );
+    function escapeHtml(str) {
+      return cleanValue(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
 
-      const activateLink = (id) => {
-        navLinks.forEach(link => link.classList.remove('is-active'));
-        const active = linkMap.get(id);
-        if (active) active.classList.add('is-active');
+    function highlightOwnName(text) {
+      let html = cleanValue(text);
+
+      const patterns = [
+        /Mar[ií]a\s+Prada[\s-]?Bou/gi,
+        /Prada[\s-]?Bou,\s*Mar[ií]a/gi,
+        /Prada[\s-]?Bou,\s*M\.?/gi,
+        /M\.?\s*Prada[\s-]?Bou/gi,
+        /Prada[\s-]?Bou\s+M\.?/gi
+      ];
+
+      patterns.forEach((pattern) => {
+        html = html.replace(pattern, match => `<strong class="mine">${match}</strong>`);
+      });
+
+      return html;
+    }
+
+    function isHighlighted(value) {
+      const v = normalize(value);
+      return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
+    }
+
+    function yearValue(value) {
+      const n = parseInt(cleanValue(value), 10);
+      return Number.isNaN(n) ? 0 : n;
+    }
+
+    function mapRow(row) {
+      return {
+        id: cleanValue(row.id),
+        tipo: cleanValue(row.tipo),
+        destacado: cleanValue(row.destacado),
+        año: cleanValue(row.año),
+        titulo: cleanValue(row.titulo),
+        subtipo: cleanValue(row.subtipo),
+        grupo_estudio: cleanValue(row.grupo_estudio),
+        fecha_inicio: cleanValue(row.fecha_inicio),
+        fecha_fin: cleanValue(row.fecha_fin),
+        autores: cleanValue(row.autores),
+        primera_autoria: cleanValue(row.primera_autoria),
+        entidad_evento: cleanValue(row.entidad_evento),
+        lugar: cleanValue(row.lugar),
+        horas: cleanValue(row.horas),
+        ects: cleanValue(row.ects),
+        tipo_presentacion: cleanValue(row.tipo_presentacion),
+        doi: cleanValue(row.doi),
+        texto_cv: cleanValue(row.texto_cv),
+        orden_manual: cleanValue(row.orden_manual)
       };
+    }
 
-      const observer = new IntersectionObserver((entries) => {
-        const visible = entries
-          .filter(entry => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    function compareItems(a, b) {
+      const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
+      const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
 
-        if (visible.length) {
-          activateLink(visible[0].target.id);
+      if (destacadoB !== destacadoA) return destacadoB - destacadoA;
+
+      const yearA = yearValue(a.año);
+      const yearB = yearValue(b.año);
+
+      if (yearB !== yearA) return yearB - yearA;
+
+      return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
+    }
+
+    function formatInlineDoi(doi) {
+      if (!doi) return '';
+      const safe = escapeHtml(doi);
+      return ` DOI: <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
+    }
+
+    function formatEntity(entity) {
+      if (!entity) return '';
+      return `<em class="entity">${escapeHtml(entity)}</em>`;
+    }
+
+    function buildFallbackText(row) {
+      const bits = [];
+
+      if (row.autores) bits.push(escapeHtml(row.autores));
+      if (row.titulo) bits.push(escapeHtml(row.titulo));
+      if (row.entidad_evento) bits.push(formatEntity(row.entidad_evento));
+      if (row.año) bits.push(escapeHtml(row.año));
+
+      let text = bits.join('. ');
+      if (text && !text.endsWith('.')) text += '.';
+      text += formatInlineDoi(row.doi);
+
+      return text;
+    }
+
+    function styleCitationText(row) {
+      let text = row.texto_cv ? escapeHtml(row.texto_cv) : buildFallbackText(row);
+
+      if (row.entidad_evento && normalize(row.tipo) !== 'comunicacion') {
+        const escapedEntity = escapeHtml(row.entidad_evento).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedEntity, 'g');
+        text = text.replace(regex, formatEntity(row.entidad_evento));
+      }
+
+      if (normalize(row.tipo) === 'curso' && row.titulo) {
+        const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const titleRegex = new RegExp(escapedTitle, 'g');
+        text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
+      }
+
+      if (row.doi) {
+        const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const doiRegex = new RegExp(`DOI:\\s*${doiEscaped}`, 'gi');
+        text = text.replace(doiRegex, formatInlineDoi(row.doi).trim());
+
+        if (!/DOI:/i.test(text) && !text.includes('inline-doi')) {
+          text = text.replace(/\s*$/, '');
+          if (!text.endsWith('.')) text += '.';
+          text += formatInlineDoi(row.doi);
         }
-      }, {
-        rootMargin: '-20% 0px -60% 0px',
-        threshold: [0.2, 0.35, 0.5, 0.7]
-      });
+      }
 
-      targets.forEach(section => observer.observe(section));
+      text = highlightOwnName(text);
+      text = text.replace(/\.\./g, '.');
 
-      if (targets[0]) activateLink(targets[0].id);
-    })();
+      return text;
+    }
+
+    function formatCommunicationHeading(row) {
+      const entity = cleanValue(row.entidad_evento);
+      const place = cleanValue(row.lugar);
+      if (entity && place) return `${entity} - ${place}`;
+      if (entity) return entity;
+      if (place) return place;
+      return '';
+    }
+
+    function renderItem(row) {
+      const heading = normalize(row.tipo) === 'comunicacion' ? formatCommunicationHeading(row) : '';
+      const texto = styleCitationText(row);
+
+      return `
+        <article class="item">
+          <div class="year-col">${escapeHtml(row.año || '—')}</div>
+          <div class="entry">
+            ${heading ? `<p class="communication-heading">${escapeHtml(heading)}</p>` : ''}
+            <p class="citation-text">${texto}</p>
+            <div class="meta">
+              ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function filterByYear(rows) {
+      const selectedYear = cleanValue(document.getElementById('year-filter').value);
+      if (!selectedYear) return rows;
+      return rows.filter(row => cleanValue(row.año) === selectedYear);
+    }
+
+    function populateYearFilter(rows) {
+      const select = document.getElementById('year-filter');
+      const years = [...new Set(
+        rows.map(r => cleanValue(r.año)).filter(Boolean)
+      )].sort((a, b) => Number(b) - Number(a));
+
+      select.innerHTML =
+        '<option value="">Todos</option>' +
+        years.map(year => `<option value="${year}">${year}</option>`).join('');
+    }
+
+    function renderBlock(blockId, listId, items) {
+      const block = document.getElementById(blockId);
+      const list = document.getElementById(listId);
+
+      if (!items.length) {
+        block.classList.add('hidden');
+        list.innerHTML = '';
+        return;
+      }
+
+      block.classList.remove('hidden');
+      list.innerHTML = items.map(renderItem).join('');
+    }
+
+    function toggleNavLink(href, visible) {
+      const link = document.querySelector(`.sidebar-nav a[href="${href}"]`);
+      if (link) {
+        link.classList.toggle('hidden', !visible);
+      }
+    }
+
+    function renderSimpleSection(sectionId, listId, rows, tipoBuscado, href) {
+      const section = document.getElementById(sectionId);
+      const items = filterByYear(rows)
+        .map(mapRow)
+        .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
+        .sort(compareItems);
+
+      if (!items.length) {
+        section.classList.add('hidden');
+        document.getElementById(listId).innerHTML = '';
+        toggleNavLink(href, false);
+        return;
+      }
+
+      section.classList.remove('hidden');
+      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
+      toggleNavLink(href, true);
+    }
+
+    function renderPublicaciones(rows) {
+      const section = document.getElementById('publicaciones-section');
+      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'articulo');
+
+      const articulos = filtered
+        .filter(row => normalize(row.subtipo) !== 'colaboracion grupo de estudio')
+        .sort(compareItems);
+
+      const grupo = filtered
+        .filter(row => normalize(row.subtipo) === 'colaboracion grupo de estudio')
+        .sort(compareItems);
+
+      renderBlock('publicaciones-articulos-block', 'publicaciones-articulos-lista', articulos);
+      renderBlock('publicaciones-grupo-block', 'publicaciones-grupo-lista', grupo);
+
+      const hasContent = articulos.length > 0 || grupo.length > 0;
+      section.classList.toggle('hidden', !hasContent);
+      toggleNavLink('#publicaciones', hasContent);
+    }
+
+    function renderComunicaciones(rows) {
+      const section = document.getElementById('comunicaciones-section');
+      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'comunicacion');
+
+      const nacionales = filtered
+        .filter(row => normalize(row.subtipo) === 'nacional')
+        .sort(compareItems);
+
+      const europeas = filtered
+        .filter(row => normalize(row.subtipo) === 'europea')
+        .sort(compareItems);
+
+      const internacionales = filtered
+        .filter(row => normalize(row.subtipo) === 'internacional')
+        .sort(compareItems);
+
+      renderBlock('comunicaciones-nacional-block', 'comunicaciones-nacional-lista', nacionales);
+      renderBlock('comunicaciones-europea-block', 'comunicaciones-europea-lista', europeas);
+      renderBlock('comunicaciones-internacional-block', 'comunicaciones-internacional-lista', internacionales);
+
+      const hasContent = nacionales.length > 0 || europeas.length > 0 || internacionales.length > 0;
+      section.classList.toggle('hidden', !hasContent);
+      toggleNavLink('#comunicaciones', hasContent);
+    }
+
+    function renderAll() {
+      renderPublicaciones(allRows);
+      renderComunicaciones(allRows);
+      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso', '#cursos');
+      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión', '#sesiones');
+      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto', '#proyectos');
+    }
+
+    initThemeToggle();
+
+    Papa.parse(csvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        allRows = results.data;
+        populateYearFilter(allRows);
+        renderAll();
+        document.getElementById('year-filter').addEventListener('change', renderAll);
+      },
+      error: function(error) {
+        console.error(error);
+        [
+          'publicaciones-articulos-lista',
+          'publicaciones-grupo-lista',
+          'comunicaciones-nacional-lista',
+          'comunicaciones-europea-lista',
+          'comunicaciones-internacional-lista',
+          'cursos-lista',
+          'sesiones-lista',
+          'proyectos-lista'
+        ].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
