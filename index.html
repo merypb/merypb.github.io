@@ -51,6 +51,7 @@
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       background:var(--bg);
@@ -340,10 +341,7 @@
       overflow:hidden;
     }
 
-    .hero::before{
-      content:none;
-    }
-
+    .hero::before,
     .hero::after{
       content:none;
     }
@@ -858,25 +856,7 @@
         .replace(/'/g, '&#039;');
     }
 
-    function highlightOwnName(text) {
-      let html = cleanValue(text);
-
-      const patterns = [
-        /Mar[ií]a\s+Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou,\s*Mar[ií]a/gi,
-        /Prada[\s-]?Bou,\s*M\.?/gi,
-        /M\.?\s*Prada[\s-]?Bou/gi,
-        /Prada[\s-]?Bou\s+M\.?/gi
-      ];
-
-      patterns.forEach((pattern) => {
-        html = html.replace(pattern, match => `<strong class="mine">${match}</strong>`);
-      });
-
-      return html;
-    }
-
-    function isHighlighted(value) {
+    function isTruthy(value) {
       const v = normalize(value);
       return v === 'si' || v === 'sí' || v === 'yes' || v === 'true' || v === '1';
     }
@@ -886,40 +866,55 @@
       return Number.isNaN(n) ? 0 : n;
     }
 
+    function pick(row, keys) {
+      for (const key of keys) {
+        if (row[key] !== undefined && row[key] !== null && String(row[key]).trim() !== '') {
+          return String(row[key]).trim();
+        }
+      }
+      return '';
+    }
+
     function mapRow(row) {
       return {
-        id: cleanValue(row.id),
-        tipo: cleanValue(row.tipo),
-        destacado: cleanValue(row.destacado),
-        año: cleanValue(row.año),
-        titulo: cleanValue(row.titulo),
-        subtipo: cleanValue(row.subtipo),
-        grupo_estudio: cleanValue(row.grupo_estudio),
-        fecha_inicio: cleanValue(row.fecha_inicio),
-        fecha_fin: cleanValue(row.fecha_fin),
-        autores: cleanValue(row.autores),
-        primera_autoria: cleanValue(row.primera_autoria),
-        entidad_evento: cleanValue(row.entidad_evento),
-        lugar: cleanValue(row.lugar),
-        horas: cleanValue(row.horas),
-        ects: cleanValue(row.ects),
-        tipo_presentacion: cleanValue(row.tipo_presentacion),
-        doi: cleanValue(row.doi),
-        texto_cv: cleanValue(row.texto_cv),
-        orden_manual: cleanValue(row.orden_manual)
+        id: pick(row, ['id', 'Id']),
+        tipo: pick(row, ['tipo', 'Tipo']),
+        visible_web: pick(row, ['visible_web', 'visible web', 'Visible_web']),
+        destacado: pick(row, ['destacado', 'Destacado']),
+        año: pick(row, ['año', 'ano', 'Año', 'Ano']),
+        titulo: pick(row, ['titulo', 'título', 'Titulo', 'Título']),
+        subtipo: pick(row, ['subtipo', 'Subtipo']),
+        grupo_estudio: pick(row, ['grupo_estudio', 'grupo estudio', 'Grupo_estudio']),
+        fecha_inicio: pick(row, ['fecha_inicio', 'fecha inicio', 'Fecha_inicio']),
+        fecha_fin: pick(row, ['fecha_fin', 'fecha fin', 'Fecha_fin']),
+        autores: pick(row, ['autores', 'Autores']),
+        primera_autoria: pick(row, ['primera_autoria', 'primera autoria', 'Primera_autoria']),
+        entidad_evento: pick(row, ['entidad_evento', 'entidad evento', 'Entidad_evento']),
+        lugar: pick(row, ['lugar', 'Lugar']),
+        horas: pick(row, ['horas', 'Horas']),
+        ects: pick(row, ['ECTS', 'ects']),
+        tipo_presentacion: pick(row, ['tipo_presentacion', 'tipo presentacion', 'Tipo_presentacion']),
+        localizador: pick(row, ['localizador', 'Localizador']),
+        doi: pick(row, ['doi', 'DOI']),
+        texto_cv: pick(row, ['texto_cv', 'texto cv', 'Texto_cv']),
+        orden_manual: pick(row, ['orden_manual', 'orden manual', 'Orden_manual'])
       };
     }
 
     function compareItems(a, b) {
-      const destacadoA = isHighlighted(a.destacado) ? 1 : 0;
-      const destacadoB = isHighlighted(b.destacado) ? 1 : 0;
-
-      if (destacadoB !== destacadoA) return destacadoB - destacadoA;
-
       const yearA = yearValue(a.año);
       const yearB = yearValue(b.año);
 
       if (yearB !== yearA) return yearB - yearA;
+
+      const tipo = normalize(a.tipo);
+      const usaPrimeraAutoria = tipo === 'articulo' || tipo === 'comunicacion';
+
+      if (usaPrimeraAutoria) {
+        const primeraA = isTruthy(a.primera_autoria) ? 1 : 0;
+        const primeraB = isTruthy(b.primera_autoria) ? 1 : 0;
+        if (primeraB !== primeraA) return primeraB - primeraA;
+      }
 
       return a.titulo.localeCompare(b.titulo, 'es', { sensitivity: 'base' });
     }
@@ -927,7 +922,8 @@
     function formatInlineDoi(doi) {
       if (!doi) return '';
       const safe = escapeHtml(doi);
-      return ` DOI: <a class="inline-doi" href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
+      const href = /^https?:\/\//i.test(safe) ? safe : `https://doi.org/${safe}`;
+      return ` DOI: <a class="inline-doi" href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     }
 
     function formatEntity(entity) {
@@ -948,6 +944,24 @@
       text += formatInlineDoi(row.doi);
 
       return text;
+    }
+
+    function highlightOwnName(text) {
+      let html = cleanValue(text);
+
+      const patterns = [
+        /Mar[ií]a\s+Prada[\s-]?Bou/gi,
+        /Prada[\s-]?Bou,\s*Mar[ií]a/gi,
+        /Prada[\s-]?Bou,\s*M\.?/gi,
+        /M\.?\s*Prada[\s-]?Bou/gi,
+        /Prada[\s-]?Bou\s+M\.?/gi
+      ];
+
+      patterns.forEach((pattern) => {
+        html = html.replace(pattern, match => `<strong class="mine">${match}</strong>`);
+      });
+
+      return html;
     }
 
     function styleCitationText(row) {
@@ -1003,7 +1017,8 @@
             ${heading ? `<p class="communication-heading">${escapeHtml(heading)}</p>` : ''}
             <p class="citation-text">${texto}</p>
             <div class="meta">
-              ${isHighlighted(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
+              ${isTruthy(row.destacado) ? '<span class="badge">Destacado</span>' : ''}
+              ${isTruthy(row.primera_autoria) && (normalize(row.tipo) === 'articulo' || normalize(row.tipo) === 'comunicacion') ? '<span class="badge">Primera autoría</span>' : ''}
             </div>
           </div>
         </article>
@@ -1017,9 +1032,10 @@
     }
 
     function populateYearFilter(rows) {
+      const mapped = rows.map(mapRow);
       const select = document.getElementById('year-filter');
       const years = [...new Set(
-        rows.map(r => cleanValue(r.año)).filter(Boolean)
+        mapped.map(r => cleanValue(r.año)).filter(Boolean)
       )].sort((a, b) => Number(b) - Number(a));
 
       select.innerHTML =
@@ -1069,7 +1085,9 @@
 
     function renderPublicaciones(rows) {
       const section = document.getElementById('publicaciones-section');
-      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'articulo');
+      const filtered = filterByYear(rows)
+        .map(mapRow)
+        .filter(row => normalize(row.tipo) === 'articulo');
 
       const articulos = filtered
         .filter(row => normalize(row.subtipo) !== 'colaboracion grupo de estudio')
@@ -1089,7 +1107,9 @@
 
     function renderComunicaciones(rows) {
       const section = document.getElementById('comunicaciones-section');
-      const filtered = filterByYear(rows).map(mapRow).filter(row => normalize(row.tipo) === 'comunicacion');
+      const filtered = filterByYear(rows)
+        .map(mapRow)
+        .filter(row => normalize(row.tipo) === 'comunicacion');
 
       const nacionales = filtered
         .filter(row => normalize(row.subtipo) === 'nacional')
@@ -1127,7 +1147,30 @@
       header: true,
       skipEmptyLines: true,
       complete: function(results) {
-        allRows = results.data;
+        allRows = results.data || [];
         populateYearFilter(allRows);
         renderAll();
-        
+        document.getElementById('year-filter').addEventListener('change', renderAll);
+      },
+      error: function(error) {
+        console.error(error);
+        [
+          'publicaciones-articulos-lista',
+          'publicaciones-grupo-lista',
+          'comunicaciones-nacional-lista',
+          'comunicaciones-europea-lista',
+          'comunicaciones-internacional-lista',
+          'cursos-lista',
+          'sesiones-lista',
+          'proyectos-lista'
+        ].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
