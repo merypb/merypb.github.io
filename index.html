@@ -115,10 +115,6 @@
       overflow:hidden;
     }
 
-    .sidebar-card::after{
-      content:none;
-    }
-
     .brand{
       display:flex;
       align-items:center;
@@ -185,10 +181,6 @@
       background:var(--surface-2);
       display:flex;
       justify-content:center;
-    }
-
-    .portrait-wrap::before{
-      content:none;
     }
 
     .profile-photo-real{
@@ -280,10 +272,6 @@
       word-break:break-word;
     }
 
-    .contact-copy p:last-child{
-      margin-bottom:0;
-    }
-
     .contact-copy strong{
       color:var(--text);
     }
@@ -341,11 +329,6 @@
       overflow:hidden;
     }
 
-    .hero::before,
-    .hero::after{
-      content:none;
-    }
-
     .eyebrow{
       margin:0 0 16px;
       color:var(--accent);
@@ -361,11 +344,11 @@
       line-height:1;
       letter-spacing:-.05em;
       font-weight:900;
-      max-width: none;
+      max-width:none;
     }
 
     .hero-intro{
-      margin:0 0 0;
+      margin:0;
       color:var(--muted);
       font-size:17px;
       line-height:1.78;
@@ -397,11 +380,6 @@
       border-radius:12px;
       padding:11px 14px;
       font:inherit;
-    }
-
-    .hero-note{
-      color:var(--muted);
-      font-size:13px;
     }
 
     .section-card{
@@ -488,10 +466,6 @@
       letter-spacing:.08em;
       text-transform:uppercase;
       line-height:1.5;
-    }
-
-    .communication-heading em{
-      font-style:italic;
     }
 
     .citation-text{
@@ -605,7 +579,6 @@
 
       .hero h1{
         font-size:clamp(2rem, 8vw, 3rem);
-        max-width:none;
       }
 
       .section-card{
@@ -704,13 +677,7 @@
               <p><strong>Correo institucional:</strong> <span class="email-copy">maria.prada@salud.madrid.org</span></p>
             </div>
 
-            <nav class="sidebar-nav" aria-label="Navegación principal">
-              <a href="#publicaciones"><span>Publicaciones</span><span>01</span></a>
-              <a href="#comunicaciones"><span>Comunicaciones</span><span>02</span></a>
-              <a href="#cursos"><span>Cursos</span><span>03</span></a>
-              <a href="#sesiones"><span>Sesiones</span><span>04</span></a>
-              <a href="#proyectos"><span>Proyectos</span><span>05</span></a>
-            </nav>
+            <nav class="sidebar-nav" id="dynamic-sidebar-nav" aria-label="Navegación principal"></nav>
           </div>
         </div>
       </aside>
@@ -727,6 +694,11 @@
             <label for="year-filter">Filtrar por año</label>
             <select id="year-filter">
               <option value="">Todos</option>
+            </select>
+
+            <label for="type-filter">Filtrar por categoría</label>
+            <select id="type-filter">
+              <option value="">Todas</option>
             </select>
           </div>
         </header>
@@ -770,38 +742,7 @@
           </div>
         </section>
 
-        <section class="section-card" id="cursos-section">
-          <div class="section-head">
-            <h2 id="cursos">Cursos y formación</h2>
-            <div class="section-caption">Formación continuada</div>
-          </div>
-
-          <div id="cursos-lista" class="list">
-            <div class="item"><p class="loading">Cargando cursos...</p></div>
-          </div>
-        </section>
-
-        <section class="section-card" id="sesiones-section">
-          <div class="section-head">
-            <h2 id="sesiones">Sesiones</h2>
-            <div class="section-caption">Docencia y participación</div>
-          </div>
-
-          <div id="sesiones-lista" class="list">
-            <div class="item"><p class="loading">Cargando sesiones...</p></div>
-          </div>
-        </section>
-
-        <section class="section-card" id="proyectos-section">
-          <div class="section-head">
-            <h2 id="proyectos">Proyectos</h2>
-            <div class="section-caption">Investigación y colaboración</div>
-          </div>
-
-          <div id="proyectos-lista" class="list">
-            <div class="item"><p class="loading">Cargando proyectos...</p></div>
-          </div>
-        </section>
+        <div id="dynamic-sections"></div>
 
         <footer>
           <p>CV ampliado actualizado para consulta profesional.</p>
@@ -814,6 +755,7 @@
   <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCex_W7gk3Zg1ITlcjb2ZBs3WD3kH_4hiBUdxGK9HSyUEye_6P2PvG6UsDQEsYNMZNmLNazx2QkyA_/pub?gid=1280662564&single=true&output=csv';
     let allRows = [];
+    const SPECIAL_TYPES = ['articulo', 'comunicacion'];
 
     function initThemeToggle() {
       const root = document.documentElement;
@@ -882,6 +824,7 @@
         id: pick(row, ['id', 'Id']),
         tipo: pick(row, ['tipo', 'Tipo']),
         visible_web: pick(row, ['visible_web', 'visible web', 'Visible_web']),
+        tipo_titulo: pick(row, ['tipo_titulo', 'tipo titulo', 'Tipo_titulo']),
         destacado: pick(row, ['destacado', 'Destacado']),
         año: pick(row, ['año', 'ano', 'Año', 'Ano']),
         titulo: pick(row, ['titulo', 'título', 'Titulo', 'Título']),
@@ -924,7 +867,7 @@
     function formatInlineDoi(doi) {
       if (!doi) return '';
       const safe = escapeHtml(doi);
-      const href = /^https?:\/\//i.test(safe) ? safe : `https://doi.org/${safe}`;
+      const href = /^https?:\/\//i.test(doi) ? doi : `https://doi.org/${safe}`;
       return ` DOI: <a class="inline-doi" href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     }
 
@@ -979,21 +922,22 @@
         const escapedTitle = escapeHtml(row.titulo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const titleRegex = new RegExp(escapedTitle, 'g');
         text = text.replace(titleRegex, `<span class="course-title">${escapeHtml(row.titulo)}</span>`);
-          }
-          if (normalize(row.tipo) === 'comunicacion' && row.entidad_evento) {
-      const entity = escapeHtml(row.entidad_evento);
-      const place = escapeHtml(row.lugar);
-    
-      if (entity && place) {
-        const combined = `${entity}, ${place}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const combinedRegex = new RegExp(combined, 'g');
-        text = text.replace(combinedRegex, `<em class="entity">${entity}, ${place}</em>`);
-      } else if (entity) {
-        const entityOnly = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const entityRegex = new RegExp(entityOnly, 'g');
-        text = text.replace(entityRegex, `<em class="entity">${entity}</em>`);
       }
-    }
+
+      if (normalize(row.tipo) === 'comunicacion' && row.entidad_evento) {
+        const entity = escapeHtml(row.entidad_evento);
+        const place = escapeHtml(row.lugar);
+
+        if (entity && place) {
+          const combined = `${entity}, ${place}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const combinedRegex = new RegExp(combined, 'g');
+          text = text.replace(combinedRegex, `<em class="entity">${entity}, ${place}</em>`);
+        } else if (entity) {
+          const entityOnly = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const entityRegex = new RegExp(entityOnly, 'g');
+          text = text.replace(entityRegex, `<em class="entity">${entity}</em>`);
+        }
+      }
 
       if (row.doi) {
         const doiEscaped = escapeHtml(row.doi).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1016,7 +960,7 @@
     function formatCommunicationHeading(row) {
       const entity = cleanValue(row.entidad_evento);
       const place = cleanValue(row.lugar);
-    
+
       if (entity && place) return `${escapeHtml(entity)} - ${escapeHtml(place)}`;
       if (entity) return escapeHtml(entity);
       if (place) return escapeHtml(place);
@@ -1041,14 +985,44 @@
       `;
     }
 
-    function filterByYear(rows) {
+    function slugify(str) {
+      return normalize(str)
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function getDisplayTypeLabel(rowOrType) {
+      if (typeof rowOrType === 'string') {
+        const t = cleanValue(rowOrType);
+        return t ? t.charAt(0).toUpperCase() + t.slice(1) : 'Sin categoría';
+      }
+
+      const custom = cleanValue(rowOrType?.tipo_titulo);
+      if (custom) return custom;
+
+      const tipo = cleanValue(rowOrType?.tipo);
+      return tipo ? tipo.charAt(0).toUpperCase() + tipo.slice(1) : 'Sin categoría';
+    }
+
+    function getVisibleMappedRows(rows) {
+      return rows
+        .map(mapRow)
+        .filter(row => isTruthy(row.visible_web));
+    }
+
+    function filterRows(rows) {
       const selectedYear = cleanValue(document.getElementById('year-filter').value);
-      if (!selectedYear) return rows;
-      return rows.filter(row => cleanValue(row.año) === selectedYear);
+      const selectedType = cleanValue(document.getElementById('type-filter').value);
+
+      return rows.filter(row => {
+        const okYear = !selectedYear || cleanValue(row.año) === selectedYear;
+        const okType = !selectedType || normalize(row.tipo) === normalize(selectedType);
+        return okYear && okType;
+      });
     }
 
     function populateYearFilter(rows) {
-      const mapped = rows.map(mapRow);
+      const mapped = getVisibleMappedRows(rows);
       const select = document.getElementById('year-filter');
       const years = [...new Set(
         mapped.map(r => cleanValue(r.año)).filter(Boolean)
@@ -1057,6 +1031,26 @@
       select.innerHTML =
         '<option value="">Todos</option>' +
         years.map(year => `<option value="${year}">${year}</option>`).join('');
+    }
+
+    function populateTypeFilter(rows) {
+      const mapped = getVisibleMappedRows(rows);
+      const select = document.getElementById('type-filter');
+
+      const grouped = mapped.reduce((acc, row) => {
+        const key = normalize(row.tipo);
+        if (!key) return acc;
+        if (!acc[key]) acc[key] = row;
+        return acc;
+      }, {});
+
+      const types = Object.values(grouped).sort((a, b) =>
+        getDisplayTypeLabel(a).localeCompare(getDisplayTypeLabel(b), 'es', { sensitivity: 'base' })
+      );
+
+      select.innerHTML =
+        '<option value="">Todas</option>' +
+        types.map(row => `<option value="${escapeHtml(row.tipo)}">${escapeHtml(getDisplayTypeLabel(row))}</option>`).join('');
     }
 
     function renderBlock(blockId, listId, items) {
@@ -1073,36 +1067,9 @@
       list.innerHTML = items.map(renderItem).join('');
     }
 
-    function toggleNavLink(href, visible) {
-      const link = document.querySelector(`.sidebar-nav a[href="${href}"]`);
-      if (link) {
-        link.classList.toggle('hidden', !visible);
-      }
-    }
-
-    function renderSimpleSection(sectionId, listId, rows, tipoBuscado, href) {
-      const section = document.getElementById(sectionId);
-      const items = filterByYear(rows)
-        .map(mapRow)
-        .filter(row => normalize(row.tipo) === normalize(tipoBuscado))
-        .sort(compareItems);
-
-      if (!items.length) {
-        section.classList.add('hidden');
-        document.getElementById(listId).innerHTML = '';
-        toggleNavLink(href, false);
-        return;
-      }
-
-      section.classList.remove('hidden');
-      document.getElementById(listId).innerHTML = items.map(renderItem).join('');
-      toggleNavLink(href, true);
-    }
-
     function renderPublicaciones(rows) {
       const section = document.getElementById('publicaciones-section');
-      const filtered = filterByYear(rows)
-        .map(mapRow)
+      const filtered = filterRows(getVisibleMappedRows(rows))
         .filter(row => normalize(row.tipo) === 'articulo');
 
       const articulos = filtered
@@ -1118,13 +1085,11 @@
 
       const hasContent = articulos.length > 0 || grupo.length > 0;
       section.classList.toggle('hidden', !hasContent);
-      toggleNavLink('#publicaciones', hasContent);
     }
 
     function renderComunicaciones(rows) {
       const section = document.getElementById('comunicaciones-section');
-      const filtered = filterByYear(rows)
-        .map(mapRow)
+      const filtered = filterRows(getVisibleMappedRows(rows))
         .filter(row => normalize(row.tipo) === 'comunicacion');
 
       const nacionales = filtered
@@ -1145,15 +1110,108 @@
 
       const hasContent = nacionales.length > 0 || europeas.length > 0 || internacionales.length > 0;
       section.classList.toggle('hidden', !hasContent);
-      toggleNavLink('#comunicaciones', hasContent);
+    }
+
+    function getSectionCaption(tipo) {
+      const t = normalize(tipo);
+      if (t === 'curso') return 'Formación continuada';
+      if (t === 'sesion' || t === 'sesión') return 'Docencia y participación';
+      if (t === 'proyecto') return 'Investigación y colaboración';
+      if (t === 'premio') return 'Reconocimientos';
+      return 'Actividad registrada';
+    }
+
+    function renderGenericTypeSection(tipoNorm, items) {
+      const sample = items[0] || { tipo: tipoNorm, tipo_titulo: '' };
+      const label = getDisplayTypeLabel(sample);
+      const id = slugify(tipoNorm);
+      const sortedItems = [...items].sort(compareItems);
+
+      return `
+        <section class="section-card" id="${id}-section">
+          <div class="section-head">
+            <h2 id="${id}">${escapeHtml(label)}</h2>
+            <div class="section-caption">${escapeHtml(getSectionCaption(sample.tipo))}</div>
+          </div>
+          <div class="list">
+            ${sortedItems.map(renderItem).join('')}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderDynamicSections(rows) {
+      const container = document.getElementById('dynamic-sections');
+      const mapped = filterRows(getVisibleMappedRows(rows));
+
+      const grouped = mapped.reduce((acc, row) => {
+        const tipoNorm = normalize(row.tipo);
+        if (!tipoNorm || SPECIAL_TYPES.includes(tipoNorm)) return acc;
+
+        if (!acc[tipoNorm]) {
+          acc[tipoNorm] = [];
+        }
+
+        acc[tipoNorm].push(row);
+        return acc;
+      }, {});
+
+      const orderedGroups = Object.entries(grouped).sort(([, itemsA], [, itemsB]) =>
+        getDisplayTypeLabel(itemsA[0]).localeCompare(getDisplayTypeLabel(itemsB[0]), 'es', { sensitivity: 'base' })
+      );
+
+      container.innerHTML = orderedGroups
+        .map(([tipoNorm, items]) => renderGenericTypeSection(tipoNorm, items))
+        .join('');
+    }
+
+    function renderDynamicSidebar(items) {
+      const nav = document.getElementById('dynamic-sidebar-nav');
+      nav.innerHTML = items.map((item, index) => `
+        <a href="#${item.id}">
+          <span>${escapeHtml(item.label)}</span>
+          <span>${String(index + 1).padStart(2, '0')}</span>
+        </a>
+      `).join('');
+    }
+
+    function buildNavigation(rows) {
+      const mapped = filterRows(getVisibleMappedRows(rows));
+      const navItems = [];
+
+      const hasPublicaciones = mapped.some(row => normalize(row.tipo) === 'articulo');
+      const hasComunicaciones = mapped.some(row => normalize(row.tipo) === 'comunicacion');
+
+      if (hasPublicaciones) {
+        navItems.push({ id: 'publicaciones', label: 'Publicaciones' });
+      }
+
+      if (hasComunicaciones) {
+        navItems.push({ id: 'comunicaciones', label: 'Comunicaciones' });
+      }
+
+      const grouped = mapped.reduce((acc, row) => {
+        const tipoNorm = normalize(row.tipo);
+        if (!tipoNorm || SPECIAL_TYPES.includes(tipoNorm)) return acc;
+        if (!acc[tipoNorm]) acc[tipoNorm] = row;
+        return acc;
+      }, {});
+
+      const dynamicItems = Object.entries(grouped)
+        .map(([tipoNorm, row]) => ({
+          id: slugify(tipoNorm),
+          label: getDisplayTypeLabel(row)
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label, 'es', { sensitivity: 'base' }));
+
+      renderDynamicSidebar([...navItems, ...dynamicItems]);
     }
 
     function renderAll() {
       renderPublicaciones(allRows);
       renderComunicaciones(allRows);
-      renderSimpleSection('cursos-section', 'cursos-lista', allRows, 'Curso', '#cursos');
-      renderSimpleSection('sesiones-section', 'sesiones-lista', allRows, 'Sesión', '#sesiones');
-      renderSimpleSection('proyectos-section', 'proyectos-lista', allRows, 'Proyecto', '#proyectos');
+      renderDynamicSections(allRows);
+      buildNavigation(allRows);
     }
 
     initThemeToggle();
@@ -1165,26 +1223,22 @@
       complete: function(results) {
         allRows = results.data || [];
         populateYearFilter(allRows);
+        populateTypeFilter(allRows);
         renderAll();
         document.getElementById('year-filter').addEventListener('change', renderAll);
+        document.getElementById('type-filter').addEventListener('change', renderAll);
       },
       error: function(error) {
         console.error(error);
-        [
-          'publicaciones-articulos-lista',
-          'publicaciones-grupo-lista',
-          'comunicaciones-nacional-lista',
-          'comunicaciones-europea-lista',
-          'comunicaciones-internacional-lista',
-          'cursos-lista',
-          'sesiones-lista',
-          'proyectos-lista'
-        ].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.innerHTML = '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
-          }
-        });
+        document.getElementById('publicaciones-articulos-lista').innerHTML =
+          '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
+        document.getElementById('publicaciones-grupo-lista').innerHTML = '';
+        document.getElementById('comunicaciones-nacional-lista').innerHTML =
+          '<article class="item"><div class="year-col">—</div><div class="entry"><p class="empty">No se han podido cargar los datos automáticamente.</p></div></article>';
+        document.getElementById('comunicaciones-europea-lista').innerHTML = '';
+        document.getElementById('comunicaciones-internacional-lista').innerHTML = '';
+        document.getElementById('dynamic-sections').innerHTML = '';
+        document.getElementById('dynamic-sidebar-nav').innerHTML = '';
       }
     });
   </script>
